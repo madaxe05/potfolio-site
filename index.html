@@ -1,135 +1,578 @@
-<!-- ABOUT SECTION -->
-<section id="about">
-    <h2>About Me</h2>
-    <div class="about-content">
-        <div class="profile-img">
-            <!-- Replace src when image is provided -->
-            <!-- <img src="profile.jpg" alt="Sohan Dhungel" class="profile-img-real"> -->
-            👨‍💻
-        </div>
-        <div class="about-text">
-            <p>
-                Hello! I'm <strong>Sohan Dhungel</strong>, a Computer Science student and developer passionate about building real-world software solutions.
-            </p>
-            <p style="margin-top: 1rem;">
-                I work across mobile development, content platforms, and performance-focused applications—combining clean UI, solid architecture, and practical deployment experience.
-            </p>
-            <p style="margin-top: 1rem;">
-                I also run <strong>Deadloq</strong>, a content-focused web platform dedicated to publishing technical articles and developer resources, emphasizing SEO-friendly structure and performance-oriented design.
-            </p>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohan Dhungel - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            animation: slideDown 0.8s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        nav {
+            background: #2d3748;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            position: relative;
+        }
+        nav a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        section {
+            margin-bottom: 5rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            position: relative;
+        }
+        section h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 4px;
+            background: #764ba2;
+            transition: width 0.6s ease;
+        }
+        section:hover h2::before {
+            width: 100%;
+        }
+        .about-content {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        .about-text p {
+            margin-bottom: 1.2rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        .about-text strong {
+            color: #667eea;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .skill-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .skill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+            border-left-color: #764ba2;
+        }
+        .skill-card h3 {
+            color: #667eea;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+        .skill-card p {
+            color: #555;
+            line-height: 1.7;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e2e8f0;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        .project-img {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-img::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .project-card:hover .project-img::after {
+            opacity: 1;
+        }
+        .project-content {
+            padding: 1.8rem;
+        }
+        .project-content h3 {
+            color: #2d3748;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+        }
+        .project-content p {
+            color: #666;
+            margin-bottom: 1.2rem;
+            line-height: 1.7;
+        }
+        .project-tags {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: linear-gradient(135deg, #e6f2ff 0%, #f0e6ff 100%);
+            color: #667eea;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid #667eea;
+        }
+        .tag:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+        .contact-section {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 3rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.15);
+        }
+        .contact-icon {
+            font-size: 2rem;
+        }
+        .contact-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .contact-item a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        footer {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            text-align: center;
+            padding: 2.5rem;
+            margin-top: 5rem;
+            border-top: 2px solid #667eea;
+        }
+        footer p {
+            opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            header p {
+                font-size: 1rem;
+            }
+            .about-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .profile-img {
+                width: 150px;
+                height: 150px;
+                font-size: 3rem;
+            }
+            nav ul {
+                gap: 0.8rem;
+            }
+            nav a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            section h2 {
+                font-size: 1.8rem;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            .contact-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sohan Dhungel</h1>
+        <p>Computer Science Student | Developer | Problem Solver</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <div class="profile-img">👨‍💻</div>
+                <div class="about-text">
+                    <p>Hello! I'm <strong>Sohan Dhungel</strong>, a Computer Science student and developer passionate about building real-world software solutions that make an impact.</p>
+                    <p>I specialize in mobile development, content platforms, and performance-focused applications—combining clean UI design, solid architecture, and practical deployment experience to deliver products that users love.</p>
+                    <p>I also run <strong>Deadloq</strong>, a content-focused web platform dedicated to publishing technical articles and developer resources, emphasizing SEO-friendly structure, clean information architecture, and performance-oriented design for maximum discoverability and readability.</p>
+                    <p>When I'm not coding, I'm exploring new technologies, contributing to open-source projects, and continuously learning to push the boundaries of what's possible in software development.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>📱 Mobile Development</h3>
+                    <p>Flutter, Dart — Cross-platform app development with focus on performance and beautiful UIs</p>
+                </div>
+                <div class="skill-card">
+                    <h3>💻 Programming Languages</h3>
+                    <p>Python, C, C++, Dart, SQL — Multi-paradigm development with clean code practices</p>
+                </div>
+                <div class="skill-card">
+                    <h3>🛠️ Tools & Technologies</h3>
+                    <p>DSA, Git, GitHub, Figma, MATLAB, Firebase — Full development toolkit</p>
+                </div>
+                <div class="skill-card">
+                    <h3>🎯 Core Competencies</h3>
+                    <p>Problem Solving, UI/UX Design, App Architecture, Web Performance, SEO Optimization</p>
+                </div>
+                <div class="skill-card">
+                    <h3>🔬 Specialized Areas</h3>
+                    <p>Machine Learning, Blockchain Technology, Cloud Architecture, API Development</p>
+                </div>
+                <div class="skill-card">
+                    <h3>📊 Design & UX</h3>
+                    <p>Figma prototyping, User research, Responsive design, Accessibility standards</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-img">📺</div>
+                    <div class="project-content">
+                        <h3>Displayy</h3>
+                        <p>A Flutter-based mobile application focused on smooth, responsive, and visually polished user experiences. Emphasizes clean layouts, modern UI components, and performance-first development with optimized rendering.</p>
+                        <div class="project-tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">Dart</span>
+                            <span class="tag">App Architecture</span>
+                            <span class="tag">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">🎨</div>
+                    <div class="project-content">
+                        <h3>HuePilot</h3>
+                        <p>A Flutter-based mobile app for exploring and managing color palettes with a focus on clean UI, smooth animations, and exceptional performance. Covers the full app lifecycle—from initial design and development to Play Store deployment.</p>
+                        <div class="project-tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">Dart</span>
+                            <span class="tag">Play Store</span>
+                            <span class="tag">Design</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">📝</div>
+                    <div class="project-content">
+                        <h3>Deadloq</h3>
+                        <p>A content-focused web platform built to publish technical articles and developer resources. Designed with clean structure, SEO-friendly content organization, and performance-oriented architecture for maximum discoverability.</p>
+                        <div class="project-tags">
+                            <span class="tag">Web</span>
+                            <span class="tag">SEO</span>
+                            <span class="tag">Web Performance</span>
+                            <span class="tag">Content CMS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">💰</div>
+                    <div class="project-content">
+                        <h3>Gold Price Prediction</h3>
+                        <p>Machine learning project predicting gold prices using historical market data, statistical analysis, and predictive modeling techniques for financial forecasting.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">Data Analysis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">🔗</div>
+                    <div class="project-content">
+                        <h3>Blockchain Verification & Storage</h3>
+                        <p>A blockchain-based system for secure verification and decentralized data storage with cryptographic security and distributed ledger technology.</p>
+                        <div class="project-tags">
+                            <span class="tag">Blockchain</span>
+                            <span class="tag">Security</span>
+                            <span class="tag">Cryptography</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">🚀</div>
+                    <div class="project-content">
+                        <h3>Additional Projects</h3>
+                        <p>Various algorithmic solutions, data structure implementations, and utility applications built with focus on code optimization and clean architecture principles.</p>
+                        <div class="project-tags">
+                            <span class="tag">DSA</span>
+                            <span class="tag">Algorithms</span>
+                            <span class="tag">Open Source</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <div class="contact-section">
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 1rem;">I'm always open to new opportunities, collaborations, and interesting conversations. Feel free to reach out through any of the following channels:</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.3rem;">Email</p>
+                            <a href="mailto:dhungelsohan@gmail.com">dhungelsohan@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🔗</div>
+                        <div>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.3rem;">GitHub</p>
+                            <a href="https://github.com/madaxe05" target="_blank">github.com/madaxe05</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">💼</div>
+                        <div>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.3rem;">LinkedIn</p>
+                            <a href="https://linkedin.com/in/sohandhungel" target="_blank">linkedin.com/in/sohandhungel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-</section>
 
-<!-- SKILLS SECTION -->
-<section id="skills">
-    <h2>Skills</h2>
-    <div class="skills-grid">
-        <div class="skill-card">
-            <h3>Mobile Development</h3>
-            <p>Flutter, Dart — Cross-platform app development</p>
-        </div>
-        <div class="skill-card">
-            <h3>Programming Languages</h3>
-            <p>Python, C, C++, SQL</p>
-        </div>
-        <div class="skill-card">
-            <h3>Tools & Technologies</h3>
-            <p>DSA, Git, GitHub, Figma, MATLAB</p>
-        </div>
-        <div class="skill-card">
-            <h3>Core Competencies</h3>
-            <p>Problem Solving, UI/UX Design, App Architecture, Web Performance</p>
-        </div>
-    </div>
-</section>
+    <footer>
+        <p>&copy; 2025 Sohan Dhungel. All rights reserved. | Built with passion and clean code</p>
+    </footer>
 
-<!-- PROJECTS SECTION -->
-<section id="projects">
-    <h2>Projects</h2>
-    <div class="projects-grid">
+    <script>
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
 
-        <!-- Huepilot -->
-        <div class="project-card">
-            <div class="project-img">🎨</div>
-            <div class="project-content">
-                <h3>Huepilot</h3>
-                <p>
-                    A Flutter-based mobile app for exploring and managing color palettes with a focus on clean UI,
-                    smooth animations, and performance. Covers the full app lifecycle—from UI/UX design to Play Store deployment.
-                </p>
-                <div class="project-tags">
-                    <span class="tag">Flutter</span>
-                    <span class="tag">Dart</span>
-                    <span class="tag">UI/UX</span>
-                    <span class="tag">Play Store</span>
-                </div>
-            </div>
-        </div>
+        // Add scroll animation for sections
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
 
-        <!-- Displayy -->
-        <div class="project-card">
-            <div class="project-img">📺</div>
-            <div class="project-content">
-                <h3>Displayy</h3>
-                <p>
-                    A Flutter-based mobile application focused on smooth, responsive, and visually polished user experiences.
-                    Emphasizes clean layouts, modern UI components, and performance-first development.
-                </p>
-                <div class="project-tags">
-                    <span class="tag">Flutter</span>
-                    <span class="tag">Dart</span>
-                    <span class="tag">App Architecture</span>
-                </div>
-            </div>
-        </div>
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-        <!-- Deadloq -->
-        <div class="project-card">
-            <div class="project-img">📝</div>
-            <div class="project-content">
-                <h3>Deadloq</h3>
-                <p>
-                    A content-focused web platform built to publish technical articles and developer resources.
-                    Designed with clean structure, SEO-friendly content, and performance-oriented architecture
-                    to ensure discoverability and readability.
-                </p>
-                <div class="project-tags">
-                    <span class="tag">SEO</span>
-                    <span class="tag">Web Performance</span>
-                    <span class="tag">Content Architecture</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Existing Projects -->
-        <div class="project-card">
-            <div class="project-img">💰</div>
-            <div class="project-content">
-                <h3>Gold Price Prediction</h3>
-                <p>
-                    Machine learning project predicting gold prices using historical market data.
-                </p>
-                <div class="project-tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">Machine Learning</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="project-card">
-            <div class="project-img">🔗</div>
-            <div class="project-content">
-                <h3>Blockchain Verification & Storage</h3>
-                <p>
-                    A blockchain-based system for secure verification and decentralized data storage.
-                </p>
-                <div class="project-tags">
-                    <span class="tag">Blockchain</span>
-                    <span class="tag">Security</span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
