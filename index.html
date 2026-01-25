@@ -1,351 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        nav {
-            background: #2d3748;
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #667eea;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        section {
-            margin-bottom: 4rem;
-        }
-
-        section h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: #2d3748;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 0.5rem;
-            display: inline-block;
-        }
-
-        .about-content {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .skill-card {
-            background: #f7fafc;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .skill-card h3 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 1.5rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-
-        .project-img {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-
-        .project-content {
-            padding: 1.5rem;
-        }
-
-        .project-content h3 {
-            color: #2d3748;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-content p {
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .project-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #e6f2ff;
-            color: #667eea;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-        }
-
-        .contact-info {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .contact-item a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .contact-item a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            background: #2d3748;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-
-            .about-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            nav ul {
-                gap: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Sohan Dhungel</h1>
-        <p>Computer Science Student | Developer | Problem Solver</p>
-    </header>
-
-    <nav>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <section id="about">
-            <h2>About Me</h2>
-            <div class="about-content">
-                <div class="profile-img">👨‍💻</div>
-                <div class="about-text">
-                    <p>Hello! I'm Sohan Dhungel, a Computer Science student with a passion for building innovative solutions through code. I enjoy working on challenging projects that combine technology with real-world applications.</p>
-                    <p style="margin-top: 1rem;">From mobile development to blockchain technology, I'm constantly exploring new technologies and expanding my skill set to create impactful software solutions.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills">
-            <h2>Skills</h2>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <h3>Mobile Development</h3>
-                    <p>Flutter - Cross-platform mobile app development</p>
-                </div>
-                <div class="skill-card">
-                    <h3>Programming Languages</h3>
-                    <p>Python, C, C++,Dart,</p>
-                </div>
-                <div class="skill-card">
-                    <h3>Tools & Technologies</h3>
-                    <p>DSA, MATLAB, Figma, Git, GitHub</p>
-                </div>
-                <div class="skill-card">
-                    <h3>Core Competencies</h3>
-                    <p>Data Structures & Algorithms, Problem Solving, UI/UX Design</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects">
-            <h2>Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-img">💰</div>
-                    <div class="project-content">
-                        <h3>Gold Price Prediction</h3>
-                        <p>Minor project implementing machine learning algorithms to predict gold prices based on historical data and market trends.</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Machine Learning</span>
-                            <span class="tag">Data Analysis</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">🔗</div>
-                    <div class="project-content">
-                        <h3>Blockchain Verification & Storage</h3>
-                        <p>Major project developing a blockchain-based system for secure verification and decentralized data storage.</p>
-                        <div class="project-tags">
-                            <span class="tag">Blockchain</span>
-                            <span class="tag">Security</span>
-                            <span class="tag">Cryptography</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">📱</div>
-                    <div class="project-content">
-                        <h3>Mobile Applications</h3>
-                        <p>Various cross-platform mobile applications built using Flutter framework with modern UI/UX design principles.</p>
-                        <div class="project-tags">
-                            <span class="tag">Flutter</span>
-                            <span class="tag">Dart</span>
-                            <span class="tag">Figma</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Feel free to reach out to me through any of the following channels:</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <span>📧</span>
-                    <a href="mailto:dhungelsohan@gmail.com">dhungelsohan@gmail.com</a>
-                </div>
-                <div class="contact-item">
-                    <span>🔗</span>
-                    <a href="https://github.com/madaxe05" target="_blank">GitHub</a>
-                </div>
-            
-            </div>
-        </section>
+<!-- ABOUT SECTION -->
+<section id="about">
+    <h2>About Me</h2>
+    <div class="about-content">
+        <div class="profile-img">
+            <!-- Replace src when image is provided -->
+            <!-- <img src="profile.jpg" alt="Sohan Dhungel" class="profile-img-real"> -->
+            👨‍💻
+        </div>
+        <div class="about-text">
+            <p>
+                Hello! I'm <strong>Sohan Dhungel</strong>, a Computer Science student and developer passionate about building real-world software solutions.
+            </p>
+            <p style="margin-top: 1rem;">
+                I work across mobile development, content platforms, and performance-focused applications—combining clean UI, solid architecture, and practical deployment experience.
+            </p>
+            <p style="margin-top: 1rem;">
+                I also run <strong>Deadloq</strong>, a content-focused web platform dedicated to publishing technical articles and developer resources, emphasizing SEO-friendly structure and performance-oriented design.
+            </p>
+        </div>
     </div>
+</section>
 
-    <footer>
-        <p>&copy; 2025 Sohan Dhungel. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+<!-- SKILLS SECTION -->
+<section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+        <div class="skill-card">
+            <h3>Mobile Development</h3>
+            <p>Flutter, Dart — Cross-platform app development</p>
+        </div>
+        <div class="skill-card">
+            <h3>Programming Languages</h3>
+            <p>Python, C, C++, SQL</p>
+        </div>
+        <div class="skill-card">
+            <h3>Tools & Technologies</h3>
+            <p>DSA, Git, GitHub, Figma, MATLAB</p>
+        </div>
+        <div class="skill-card">
+            <h3>Core Competencies</h3>
+            <p>Problem Solving, UI/UX Design, App Architecture, Web Performance</p>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS SECTION -->
+<section id="projects">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+
+        <!-- Huepilot -->
+        <div class="project-card">
+            <div class="project-img">🎨</div>
+            <div class="project-content">
+                <h3>Huepilot</h3>
+                <p>
+                    A Flutter-based mobile app for exploring and managing color palettes with a focus on clean UI,
+                    smooth animations, and performance. Covers the full app lifecycle—from UI/UX design to Play Store deployment.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Flutter</span>
+                    <span class="tag">Dart</span>
+                    <span class="tag">UI/UX</span>
+                    <span class="tag">Play Store</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Displayy -->
+        <div class="project-card">
+            <div class="project-img">📺</div>
+            <div class="project-content">
+                <h3>Displayy</h3>
+                <p>
+                    A Flutter-based mobile application focused on smooth, responsive, and visually polished user experiences.
+                    Emphasizes clean layouts, modern UI components, and performance-first development.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Flutter</span>
+                    <span class="tag">Dart</span>
+                    <span class="tag">App Architecture</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deadloq -->
+        <div class="project-card">
+            <div class="project-img">📝</div>
+            <div class="project-content">
+                <h3>Deadloq</h3>
+                <p>
+                    A content-focused web platform built to publish technical articles and developer resources.
+                    Designed with clean structure, SEO-friendly content, and performance-oriented architecture
+                    to ensure discoverability and readability.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">SEO</span>
+                    <span class="tag">Web Performance</span>
+                    <span class="tag">Content Architecture</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Projects -->
+        <div class="project-card">
+            <div class="project-img">💰</div>
+            <div class="project-content">
+                <h3>Gold Price Prediction</h3>
+                <p>
+                    Machine learning project predicting gold prices using historical market data.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Machine Learning</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-img">🔗</div>
+            <div class="project-content">
+                <h3>Blockchain Verification & Storage</h3>
+                <p>
+                    A blockchain-based system for secure verification and decentralized data storage.
+                </p>
+                <div class="project-tags">
+                    <span class="tag">Blockchain</span>
+                    <span class="tag">Security</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
