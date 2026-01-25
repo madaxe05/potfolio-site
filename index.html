@@ -146,6 +146,7 @@
             flex-shrink: 0;
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
             animation: float 3s ease-in-out infinite;
+            object-fit: cover;
         }
         @keyframes float {
             0%, 100% {
@@ -225,6 +226,12 @@
             font-size: 4rem;
             position: relative;
             overflow: hidden;
+            object-fit: cover;
+        }
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .project-img::after {
             content: '';
@@ -272,6 +279,34 @@
             background: #667eea;
             color: white;
             transform: scale(1.05);
+        }
+        .github-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        .github-cta h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .github-cta a {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .github-cta a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         .contact-section {
             background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
@@ -379,7 +414,7 @@
         <section id="about">
             <h2>About Me</h2>
             <div class="about-content">
-                <div class="https://github.com/madaxe05/images/blob/main/IMG_5938.png"></div>
+                <img src="https://raw.githubusercontent.com/madaxe05/images/main/IMG_5938.png" alt="Sohan Dhungel" class="profile-img">
                 <div class="about-text">
                     <p>Hello! I'm <strong>Sohan Dhungel</strong>, a Computer Science student and developer passionate about building real-world software solutions that make an impact.</p>
                     <p>I specialize in mobile development, content platforms, and performance-focused applications—combining clean UI design, solid architecture, and practical deployment experience to deliver products that users love.</p>
@@ -423,7 +458,9 @@
             <h2>Featured Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="https://github.com/madaxe05/images/blob/main/Untitled%20design-2.png"></div>
+                    <div class="project-img">
+                        <img src="https://raw.githubusercontent.com/madaxe05/images/main/Untitled%20design-2.png" alt="Displayy Project">
+                    </div>
                     <div class="project-content">
                         <h3>Displayy</h3>
                         <p>A Flutter-based mobile application focused on smooth, responsive, and visually polished user experiences. Emphasizes clean layouts, modern UI components, and performance-first development with optimized rendering.</p>
@@ -431,13 +468,15 @@
                             <span class="tag">Flutter</span>
                             <span class="tag">Dart</span>
                             <span class="tag">UI/UX</span>
-                             <span class="tag">Play Store</span>
+                            <span class="tag">Play Store</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="project-card">
-                    <div class="https://github.com/madaxe05/images/blob/main/Untitled%20design-8.png"></div>
+                    <div class="project-img">
+                        <img src="https://raw.githubusercontent.com/madaxe05/images/main/Untitled%20design-8.png" alt="HuePilot Project">
+                    </div>
                     <div class="project-content">
                         <h3>HuePilot</h3>
                         <p>A Flutter-based mobile app for exploring and managing color palettes with a focus on clean UI, smooth animations, and exceptional performance. Covers the full app lifecycle—from initial design and development to Play Store deployment.</p>
@@ -451,7 +490,9 @@
                 </div>
 
                 <div class="project-card">
-                    <div class="https://github.com/madaxe05/images/blob/main/D.png"></div>
+                    <div class="project-img">
+                        <img src="https://raw.githubusercontent.com/madaxe05/images/main/D.png" alt="Deadloq Project">
+                    </div>
                     <div class="project-content">
                         <h3>Deadloq</h3>
                         <p>A content-focused web platform built to publish technical articles and developer resources. Designed with clean structure, SEO-friendly content organization, and performance-oriented architecture for maximum discoverability.</p>
@@ -493,7 +534,7 @@
                 <div class="project-card">
                     <div class="project-img">🚀</div>
                     <div class="project-content">
-                        <h3>Additional Projects</h3>
+                        <h3>More Projects</h3>
                         <p>Various algorithmic solutions, data structure implementations, and utility applications built with focus on code optimization and clean architecture principles.</p>
                         <div class="project-tags">
                             <span class="tag">DSA</span>
@@ -502,6 +543,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="github-cta">
+                <h3>Explore More Projects on GitHub</h3>
+                <p>Find more of my work, contributions, and open-source projects on my GitHub profile.</p>
+                <a href="https://github.com/madaxe05" target="_blank">🔗 Visit My GitHub</a>
             </div>
         </section>
 
@@ -522,13 +569,6 @@
                         <div>
                             <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.3rem;">GitHub</p>
                             <a href="https://github.com/madaxe05" target="_blank">github.com/madaxe05</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">💼</div>
-                        <div>
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.3rem;">LinkedIn</p>
-                            <a href="https://linkedin.com/in/sohandhungel" target="_blank">linkedin.com/in/sohandhungel</a>
                         </div>
                     </div>
                 </div>
