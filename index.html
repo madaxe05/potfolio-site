@@ -10,12 +10,15 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
             scroll-behavior: smooth;
         }
+
+        /* Header */
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -23,6 +26,7 @@
             text-align: center;
             animation: slideDown 0.8s ease-out;
         }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -33,15 +37,19 @@
                 transform: translateY(0);
             }
         }
+
         header h1 {
             font-size: 3rem;
             margin-bottom: 0.5rem;
             font-weight: 700;
         }
+
         header p {
             font-size: 1.2rem;
             opacity: 0.95;
         }
+
+        /* Navigation */
         nav {
             background: #2d3748;
             padding: 1rem;
@@ -50,6 +58,7 @@
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+
         nav ul {
             list-style: none;
             display: flex;
@@ -59,6 +68,7 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
         nav a {
             color: white;
             text-decoration: none;
@@ -68,10 +78,12 @@
             border-radius: 4px;
             position: relative;
         }
+
         nav a:hover {
             color: #667eea;
             background: rgba(102, 126, 234, 0.1);
         }
+
         nav a::after {
             content: '';
             position: absolute;
@@ -82,18 +94,23 @@
             background: #667eea;
             transition: width 0.3s ease;
         }
+
         nav a:hover::after {
             width: 100%;
         }
+
+        /* Layout */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
+
         section {
             margin-bottom: 5rem;
             animation: fadeIn 0.8s ease-out;
         }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -104,6 +121,7 @@
                 transform: translateY(0);
             }
         }
+
         section h2 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
@@ -113,6 +131,7 @@
             display: inline-block;
             position: relative;
         }
+
         section h2::before {
             content: '';
             position: absolute;
@@ -123,9 +142,12 @@
             background: #764ba2;
             transition: width 0.6s ease;
         }
+
         section:hover h2::before {
             width: 100%;
         }
+
+        /* About Section */
         .about-content {
             display: flex;
             gap: 3rem;
@@ -133,6 +155,7 @@
             flex-wrap: wrap;
             margin-top: 2rem;
         }
+
         .profile-img {
             width: 200px;
             height: 200px;
@@ -148,40 +171,45 @@
             animation: float 3s ease-in-out infinite;
             object-fit: cover;
         }
+
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
+
         .about-text {
             flex: 1;
             min-width: 300px;
         }
+
         .about-text p {
             margin-bottom: 1.2rem;
             line-height: 1.8;
             font-size: 1.05rem;
         }
+
         .about-text strong {
             color: #667eea;
         }
+
         .about-text a {
             color: #667eea;
             text-decoration: none;
             transition: all 0.3s ease;
         }
+
         .about-text a:hover {
             color: #764ba2;
         }
+
+        /* Skills Section */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
+
         .skill-card {
             background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             padding: 2rem;
@@ -190,26 +218,32 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
+
         .skill-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
             border-left-color: #764ba2;
         }
+
         .skill-card h3 {
             color: #667eea;
             margin-bottom: 0.8rem;
             font-size: 1.2rem;
         }
+
         .skill-card p {
             color: #555;
             line-height: 1.7;
         }
+
+        /* Projects Section */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2.5rem;
             margin-top: 2rem;
         }
+
         .project-card {
             background: white;
             border-radius: 12px;
@@ -218,12 +252,16 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid #e2e8f0;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
         }
+
         .project-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
             border-color: #667eea;
         }
+
         .project-img {
             width: 100%;
             height: 220px;
@@ -237,11 +275,13 @@
             overflow: hidden;
             object-fit: cover;
         }
+
         .project-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .project-img::after {
             content: '';
             position: absolute;
@@ -253,27 +293,37 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .project-card:hover .project-img::after {
             opacity: 1;
         }
+
         .project-content {
             padding: 1.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
+
         .project-content h3 {
             color: #2d3748;
             margin-bottom: 0.8rem;
             font-size: 1.4rem;
         }
+
         .project-content p {
             color: #666;
             margin-bottom: 1.2rem;
             line-height: 1.7;
+            flex: 1;
         }
+
         .project-tags {
             display: flex;
             gap: 0.6rem;
             flex-wrap: wrap;
         }
+
         .tag {
             background: linear-gradient(135deg, #e6f2ff 0%, #f0e6ff 100%);
             color: #667eea;
@@ -284,11 +334,14 @@
             transition: all 0.3s ease;
             border: 1px solid #667eea;
         }
+
         .tag:hover {
             background: #667eea;
             color: white;
             transform: scale(1.05);
         }
+
+        /* GitHub CTA */
         .github-cta {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -298,10 +351,12 @@
             margin: 3rem 0;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
         }
+
         .github-cta h3 {
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
+
         .github-cta a {
             display: inline-block;
             background: white;
@@ -313,50 +368,58 @@
             transition: all 0.3s ease;
             margin-top: 1rem;
         }
+
         .github-cta a:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
+
+        /* Contact Section */
         .contact-section {
             background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             padding: 3rem;
             border-radius: 12px;
             margin-top: 2rem;
         }
+
+        .contact-section > p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
         .contact-info {
             display: flex;
             gap: 2rem;
             margin-top: 2rem;
             justify-content: center;
+            flex-wrap: wrap;
         }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-        .contact-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.15);
-        }
-        .contact-icon {
-            font-size: 2rem;
-        }
+
         .contact-link {
-            font-size: 4rem;
+            font-size: 3rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             color: #667eea;
+            width: 60px;
+            height: 60px;
         }
+
         .contact-link:hover {
             transform: scale(1.2);
             color: #764ba2;
         }
+
+        .contact-link svg {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* Footer */
         footer {
             background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
             color: white;
@@ -365,42 +428,55 @@
             margin-top: 5rem;
             border-top: 2px solid #667eea;
         }
+
         footer p {
             opacity: 0.9;
         }
+
+        /* Responsive */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2rem;
             }
+
             header p {
                 font-size: 1rem;
             }
+
             .about-content {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
+
             .profile-img {
                 width: 150px;
                 height: 150px;
                 font-size: 3rem;
             }
+
             nav ul {
                 gap: 0.8rem;
             }
+
             nav a {
                 padding: 0.4rem 0.8rem;
                 font-size: 0.9rem;
             }
+
             section h2 {
                 font-size: 1.8rem;
             }
+
             .projects-grid {
                 grid-template-columns: 1fr;
             }
+
             .contact-info {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: center;
             }
+
             .contact-section {
                 padding: 1.5rem;
             }
@@ -412,6 +488,7 @@
         <h1>Sohan Dhungel</h1>
         <p>Computer Science Student | Developer | Problem Solver</p>
     </header>
+
     <nav>
         <ul>
             <li><a href="#about">About</a></li>
@@ -420,6 +497,7 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
+
     <div class="container">
         <section id="about">
             <h2>About Me</h2>
@@ -467,6 +545,7 @@
         <section id="projects">
             <h2>Featured Projects</h2>
             <div class="projects-grid">
+                <div class="project-card">
                     <div class="project-img">
                         <img src="https://raw.githubusercontent.com/madaxe05/images/main/Untitled%20design-2.png" alt="Displayy Project">
                     </div>
@@ -482,6 +561,7 @@
                     </div>
                 </div>
 
+                <div class="project-card">
                     <div class="project-img">
                         <img src="https://raw.githubusercontent.com/madaxe05/images/main/Untitled%20design-8.png" alt="HuePilot Project">
                     </div>
@@ -512,6 +592,8 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="project-card">
                     <div class="project-img">💰</div>
                     <div class="project-content">
                         <h3>Gold Price Prediction</h3>
@@ -524,7 +606,7 @@
                     </div>
                 </div>
 
-                
+                <div class="project-card">
                     <div class="project-img">🔗</div>
                     <div class="project-content">
                         <h3>Blockchain Verification & Storage</h3>
@@ -536,6 +618,8 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="project-card">
                     <div class="project-img">🚀</div>
                     <div class="project-content">
                         <h3>More Projects</h3>
@@ -552,18 +636,18 @@
             <div class="github-cta">
                 <h3>Explore More Projects on GitHub</h3>
                 <p>Find more of my work, contributions, and open-source projects on my GitHub profile.</p>
-                <a href="https://github.com/madaxe05" target="_blank"> Visit My GitHub</a>
+                <a href="https://github.com/madaxe05" target="_blank">Visit My GitHub</a>
             </div>
         </section>
 
         <section id="contact">
             <h2>Get In Touch</h2>
             <div class="contact-section">
-                <p style="font-size: 1.1rem; color: #555; margin-bottom: 1rem;">I'm always open to new opportunities, collaborations, and interesting conversations. Feel free to reach out through any of the following channels:</p>
+                <p>I'm always open to new opportunities, collaborations, and interesting conversations. Feel free to reach out through any of the following channels:</p>
                 <div class="contact-info">
                     <span class="contact-link" onclick="window.location.href='mailto:dhungelsohan@gmail.com'" title="Email">📧</span>
                     <span class="contact-link" onclick="window.open('https://github.com/madaxe05', '_blank')" title="GitHub">
-                        <svg width="60" height="60" viewBox="0 0 64 64" fill="currentColor">
+                        <svg viewBox="0 0 64 64" fill="currentColor">
                             <path d="M32 0C14.3 0 0 14.3 0 32c0 14.1 9.2 26.2 21.9 30.5 1.6.3 2.2-.7 2.2-1.5 0-.8 0-2.8 0-5.5-8.9 1.9-10.8-3.8-10.8-3.8-1.5-3.8-3.6-4.8-3.6-4.8-2.9-2 .2-2 .2-2 3.2.2 4.9 3.3 4.9 3.3 2.9 4.9 7.5 3.5 9.3 2.7.3-2.1 1.1-3.5 2.1-4.3-7.3-.8-15-3.7-15-16.3 0-3.6 1.3-6.6 3.3-8.9-.3-.8-1.4-4 .3-8.3 0 0 2.7-.9 8.8 3.3 2.6-.7 5.4-1.1 8.1-1.1 2.8 0 5.5.4 8.1 1.1 6.1-4.2 8.8-3.3 8.8-3.3 1.7 4.3 .6 7.5 .3 8.3 2.1 2.3 3.3 5.3 3.3 8.9 0 12.6-7.7 15.5-15 16.3 1.2 1 2.2 3 2.2 6 0 4.3 0 7.8 0 8.9 0 .9 .6 1.9 2.2 1.5 12.7-4.3 22-16.5 22-30.6C64 14.3 49.7 0 32 0z"/>
                         </svg>
                     </span>
@@ -588,7 +672,7 @@
             });
         });
 
-        // Add scroll animation for sections
+        // Intersection Observer for scroll animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
