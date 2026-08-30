@@ -1,20 +1,25 @@
-import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowUpRightIcon,
+  GithubLogoIcon,
+  InstagramLogoIcon,
+  LinkedinLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { site } from "@/data/site";
 import { ContactForm } from "./ContactForm";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
 const socials = [
-  { label: "GitHub", href: site.github },
-  { label: "LinkedIn", href: site.linkedin },
-  { label: "Instagram", href: site.instagram },
+  { label: "GitHub", href: site.github, Icon: GithubLogoIcon },
+  { label: "LinkedIn", href: site.linkedin, Icon: LinkedinLogoIcon },
+  { label: "Instagram", href: site.instagram, Icon: InstagramLogoIcon },
 ];
 
 /** Layout family: split. Details on the left, the form on the right. */
 export function Contact() {
   return (
     <section id="contact" className="border-t border-line-soft bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-36">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-32">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <Reveal>
@@ -56,8 +61,9 @@ export function Contact() {
                         href={s.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group inline-flex cursor-pointer items-center gap-1 text-base text-fg transition-colors hover:text-accent"
+                        className="group inline-flex cursor-pointer items-center gap-1.5 text-base text-fg transition-colors hover:text-accent"
                       >
+                        <s.Icon size={16} aria-hidden className="text-faint transition-colors duration-200 group-hover:text-accent" />
                         {s.label}
                         <ArrowUpRightIcon
                           size={14}

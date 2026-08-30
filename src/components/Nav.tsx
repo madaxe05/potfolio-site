@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { ArrowDownIcon, ListIcon, XIcon } from "@phosphor-icons/react";
+import { ArrowDownIcon, ArrowSquareOutIcon, ListIcon, XIcon } from "@phosphor-icons/react";
 import { site } from "@/data/site";
+import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
   { href: "#work", label: "Work" },
@@ -11,6 +12,7 @@ const links = [
   { href: "#studios", label: "Studios" },
   { href: "#services", label: "Services" },
   { href: "#toolkit", label: "Toolkit" },
+  { href: "#journey", label: "Journey" },
   { href: "#about", label: "About" },
 ];
 
@@ -87,24 +89,37 @@ export function Nav() {
           </ul>
           <a
             href={site.cv}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-fg transition-all duration-200 hover:border-accent hover:text-accent active:scale-[0.98]"
+          >
+            <ArrowSquareOutIcon size={15} aria-hidden />
+            View CV
+          </a>
+          <a
+            href={site.cv}
             download
             className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-fg transition-all duration-200 hover:border-accent hover:text-accent active:scale-[0.98]"
           >
             <ArrowDownIcon size={15} aria-hidden />
             Download CV
           </a>
+          <ThemeToggle />
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-line text-fg md:hidden"
-        >
-          {open ? <XIcon size={18} aria-hidden /> : <ListIcon size={18} aria-hidden />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-line text-fg"
+          >
+            {open ? <XIcon size={18} aria-hidden /> : <ListIcon size={18} aria-hidden />}
+          </button>
+        </div>
       </nav>
 
       {open && (
@@ -128,15 +143,27 @@ export function Nav() {
               </li>
             ))}
           </ul>
-          <a
-            href={site.cv}
-            download
-            onClick={() => setOpen(false)}
-            className="mt-5 inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-5 py-3 text-sm text-fg"
-          >
-            <ArrowDownIcon size={15} aria-hidden />
-            Download CV
-          </a>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a
+              href={site.cv}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-5 py-3 text-sm text-fg"
+            >
+              <ArrowSquareOutIcon size={15} aria-hidden />
+              View CV
+            </a>
+            <a
+              href={site.cv}
+              download
+              onClick={() => setOpen(false)}
+              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-5 py-3 text-sm text-fg"
+            >
+              <ArrowDownIcon size={15} aria-hidden />
+              Download CV
+            </a>
+          </div>
         </motion.div>
       )}
     </header>

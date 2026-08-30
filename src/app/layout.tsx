@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     type: "profile",
     title: `${site.name} - Software Developer`,
     description,
-    images: [{ url: "/portrait.jpg", width: 1200, height: 1600, alt: site.name }],
+    images: [{ url: "/portrait.jpg", width: 1080, height: 1080, alt: site.name }],
   },
   twitter: { card: "summary_large_image" },
 };
@@ -53,6 +53,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        {/* Runs before paint so the stored theme never flashes. Kept inline
+            (not a module) so it blocks nothing and runs before hydration. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}",
+          }}
+        />
         {/* Reveals start at opacity 0 and are animated in by JS. Without JS
             they would never appear, so force them visible instead. */}
         <noscript>

@@ -10,7 +10,7 @@
     <style>
       @page {
         size: A4;
-        margin: 10mm 11mm;
+        margin: 10mm 12mm;
       }
       * {
         box-sizing: border-box;
@@ -18,9 +18,9 @@
       body {
         margin: 0;
         font-family: "Inter", system-ui, sans-serif;
-        font-size: 8.3pt;
-        line-height: 1.28;
-        color: #14140f;
+        font-size: 8.2pt;
+        line-height: 1.26;
+        color: #1c1c17;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -29,42 +29,51 @@
         text-decoration: none;
       }
       h1 {
-        font-size: 19.5pt;
-        letter-spacing: -0.035em;
+        font-size: 21pt;
+        letter-spacing: -0.03em;
         margin: 0;
         font-weight: 700;
       }
       .role {
-        font-size: 9.6pt;
+        font-size: 9.8pt;
         color: #5c5c55;
-        margin: 2px 0 0;
+        margin: 3px 0 0;
       }
       .contact {
-        margin: 7px 0 0;
-        font-size: 8.1pt;
+        margin: 6px 0 0;
+        font-size: 7.9pt;
         color: #3d3d37;
         display: flex;
         flex-wrap: wrap;
-        gap: 3px 11px;
+        gap: 3px 12px;
       }
-      .rule {
-        border: 0;
-        border-top: 1.6px solid #14140f;
-        margin: 8px 0 0;
+      .contact span::after,
+      .contact a::after {
+        content: none;
       }
+
+      /* Section headers: plain weight and case, not a small-caps
+         letter-spaced label. That treatment is the single most common
+         tell of a template-generated resume. */
       h2 {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 7.2pt;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: #8a8a80;
-        font-weight: 500;
-        margin: 8px 0 4px;
-        padding-bottom: 3px;
-        border-bottom: 1px solid #dedad0;
+        font-size: 9.6pt;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 7px 0 3px;
+        padding-bottom: 2px;
+        border-bottom: 1.3px solid #1c1c17;
       }
+      h2:first-of-type {
+        margin-top: 6px;
+      }
+
+      p.lede {
+        margin: 0;
+        max-width: 96%;
+      }
+
       .entry {
-        margin-bottom: 5px;
+        margin-bottom: 4px;
         break-inside: avoid;
       }
       .entry:last-child {
@@ -78,67 +87,69 @@
       }
       .title {
         font-weight: 600;
-        font-size: 9.1pt;
+        font-size: 9.3pt;
       }
       .meta {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 7.4pt;
+        font-size: 7.9pt;
         color: #8a8a80;
         white-space: nowrap;
       }
       .sub {
         color: #5c5c55;
-        font-size: 8.3pt;
+        font-size: 8.4pt;
         margin: 1px 0 0;
       }
       p.desc {
         margin: 3px 0 0;
       }
       ul {
-        margin: 3px 0 0;
+        margin: 2px 0 0;
         padding-left: 14px;
       }
       li {
         margin-bottom: 0.5px;
       }
+
       .skills {
         display: grid;
-        grid-template-columns: 80px 1fr;
-        gap: 3px 10px;
+        grid-template-columns: 88px 1fr;
+        gap: 2.5px 10px;
         align-items: baseline;
       }
       .skills dt {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 7pt;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        font-size: 7.7pt;
         color: #8a8a80;
       }
       .skills dd {
         margin: 0;
       }
+
+      /* Published apps: a plain two-column list, name then stack, no
+         dotted separators pretending to be a UI component. */
       .apps {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1px 18px;
+        gap: 1.5px 18px;
+        margin-top: 4px;
       }
       .app {
         display: flex;
         justify-content: space-between;
         gap: 10px;
-        border-bottom: 1px dotted #e2ded4;
-        padding-bottom: 1.5px;
+      }
+      .app span:first-child {
+        font-weight: 500;
       }
       .app span:last-child {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 7.1pt;
+        font-size: 7.6pt;
         color: #8a8a80;
         white-space: nowrap;
       }
+
       .two {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0 24px;
+        gap: 0 26px;
       }
     </style>
   </head>
@@ -156,70 +167,66 @@
           >linkedin.com/in/sohan-dhungel</a
         >
       </div>
-      <hr class="rule" />
     </header>
 
     <h2>Profile</h2>
-    <p>
-      Software Developer at Octacore Solutions and a Computer Engineering
-      graduate from Tribhuvan University. Nine Android apps published to Google
-      Play across two developer accounts, built with Flutter and Firebase, plus
-      Ethereum smart contracts, LSTM forecasting models and Godot games.
-      Currently deepening Java and backend development.
+    <p class="lede">
+      Computer Engineering graduate (Tribhuvan University, 2026), now a
+      Software Developer at Octacore Solutions in Kathmandu. I ship Flutter
+      apps end to end under two Google Play accounts, nine of them live, and
+      build outside of work in Godot and Solidity. Comfortable owning a
+      feature from data model to release.
     </p>
 
     <h2>Experience</h2>
     <div class="entry">
       <div class="line">
         <span class="title">Software Developer</span>
-        <span class="meta">Current, 1 week</span>
+        <span class="meta">Aug 2026 - Present</span>
       </div>
       <p class="sub">
         <a href="https://octacore.com.np">Octacore Solutions</a>, Kathmandu
       </p>
       <ul>
-        <li>Build and ship production software with the engineering team.</li>
-        <li>Moved into the developer role after a two month internship with the same team.</li>
+        <li>Kept on after the internship below to work on the same production codebase full-time.</li>
       </ul>
     </div>
     <div class="entry">
       <div class="line">
         <span class="title">Software Engineering Intern</span>
-        <span class="meta">2 months</span>
+        <span class="meta">Jun 2026 - Aug 2026</span>
       </div>
       <p class="sub">
         <a href="https://octacore.com.np">Octacore Solutions</a>, Kathmandu
       </p>
       <ul>
-        <li>
-          Worked across the delivery cycle, from feature development through
-          testing and release.
-        </li>
+        <li>First professional exposure to a team codebase: feature branches, code review and a real release process, not just solo assignments.</li>
       </ul>
     </div>
 
     <h2>Published Applications</h2>
-    <p class="sub" style="margin-bottom: 6px">
-      Two Google Play developer accounts:
+    <p class="sub" style="margin-bottom: 0">
+      Nine apps live on Google Play across two developer accounts I run
+      myself,
       <a href="https://play.google.com/store/apps/developer?id=Suso+Studios"
         >Suso Studios</a
       >
       and
       <a href="https://play.google.com/store/apps/developer?id=Mad+Axe"
         >Mad Axe</a
-      >.
+      >: build, publish, and the store listing, all handled solo.
     </p>
     <div class="apps">
       <div class="app">
-        <span>Veritas Subscription Guard</span><span>Flutter, Drift, Firebase</span>
+        <span>Veritas Subscription Guard, tracks renewals</span><span>Flutter, Riverpod, Drift</span>
       </div>
-      <div class="app"><span>Veritas PDF</span><span>Flutter</span></div>
+      <div class="app"><span>Veritas PDF, offline PDF toolkit</span><span>Flutter</span></div>
       <div class="app">
-        <span>Grocressy, shopping list</span><span>Flutter, Firestore, Gemini</span>
+        <span>Grocressy, shopping list with price history</span><span>Flutter, Firestore, Gemini</span>
       </div>
-      <div class="app"><span>ColorJoy, kids colouring</span><span>Flutter, offline</span></div>
-      <div class="app"><span>HuePilot, colour palettes</span><span>Flutter, Firebase</span></div>
-      <div class="app"><span>Displayy</span><span>Flutter</span></div>
+      <div class="app"><span>ColorJoy, 827-page kids colouring book</span><span>Flutter, offline</span></div>
+      <div class="app"><span>HuePilot, colour palette generator</span><span>Flutter, Firebase</span></div>
+      <div class="app"><span>Displayy, solid-colour screen fill</span><span>Flutter</span></div>
       <div class="app"><span>GTA Cheats: All Codes</span><span>Flutter, AdMob</span></div>
       <div class="app"><span>GTA 6 Cheat Codes</span><span>Flutter</span></div>
       <div class="app"><span>Merge 1024, puzzle game</span><span>Flutter</span></div>
@@ -228,31 +235,27 @@
     <h2>Selected Projects</h2>
     <div class="entry">
       <div class="line">
-        <span class="title">Blockchain Document Storage and Verification</span>
+        <span class="title">Blockchain Document Verification</span>
         <span class="meta">Solidity, React, Node</span>
       </div>
       <p class="desc">
-        Decentralised, tamper-proof document verification on Ethereum. Solidity
-        contracts store immutable AES-256 and SHA-256 hashes on chain, so a
-        forged copy fails verification. Full-stack app with React, Node, Express
-        and Web3.js.
-        <a href="https://github.com/madaxe05/blockchain-document-verification"
-          >github.com/madaxe05/blockchain-document-verification</a
-        >
+        A document is hashed with SHA-256, the hash goes on an Ethereum
+        contract, and a later upload of the same file is checked against it,
+        so an edited or forged copy fails the check. Full-stack app: Solidity
+        contracts, a React and Node front end, Web3.js for the chain calls.
+        <a href="https://github.com/madaxe05/blockchain-document-verification">GitHub ↗</a>
       </p>
     </div>
     <div class="entry">
       <div class="line">
-        <span class="title">Gold Price Prediction with LSTM</span>
+        <span class="title">Gold Price Prediction</span>
         <span class="meta">TensorFlow, Keras</span>
       </div>
       <p class="desc">
-        LSTM deep learning model forecasting gold prices from historical
-        time-series data, with an end-to-end preprocessing, training and
-        evaluation pipeline and Matplotlib visualisation.
-        <a href="https://github.com/madaxe05/Gold-Price-Prediction"
-          >github.com/madaxe05/Gold-Price-Prediction</a
-        >
+        An LSTM model trained on historical gold price time series. Built the
+        full pipeline myself: cleaning the data, windowing it for the model,
+        training, and plotting predicted against actual price in Matplotlib.
+        <a href="https://github.com/madaxe05/Gold-Price-Prediction">GitHub ↗</a>
       </p>
     </div>
     <div class="entry">
@@ -261,9 +264,10 @@
         <span class="meta">Protobytes Hackathon 2.0</span>
       </div>
       <p class="desc">
-        Circular-economy web platform connecting restaurants with farmers to
-        redistribute surplus food. React front end, Firebase Functions and
-        Firestore, with a Python rule classifier. Built with Team Berserkers.
+        Built with three teammates (Team Berserkers) at an inter-college
+        hackathon: a React app that matches restaurants with surplus food to
+        nearby farmers, backed by Firebase Functions and a small Python
+        classifier for sorting listings.
       </p>
     </div>
     <div class="entry">
@@ -272,9 +276,10 @@
         <span class="meta">Godot 4, GDScript</span>
       </div>
       <p class="desc">
-        Three games in development for Play Store and App Store release. Realm
-        Guard is a 35-level tower defence with an automated balance simulator
-        that plays every wave headlessly before a build ships.
+        Three Godot games I'm building for a Play Store and App Store
+        release. Realm Guard is a 35-level tower defence; before any build
+        ships, a script plays every level headlessly to check the difficulty
+        curve actually holds.
       </p>
     </div>
 
@@ -332,8 +337,9 @@
         <div class="entry">
           <span class="title">Relevant Coursework</span>
           <p class="sub">
-            Data Structures and Algorithms, Machine Learning and AI, Software
-            Engineering, Data Mining, Project Management, MySQL, UML.
+            Data Structures and Algorithms, Machine Learning and AI,
+            Software Engineering, Data Mining, Project Management, MySQL,
+            UML.
           </p>
         </div>
       </div>

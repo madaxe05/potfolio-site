@@ -276,7 +276,7 @@ export function PlayMerge() {
         onPointerCancel={() => {
           touch.current = null;
         }}
-        className="relative mt-6 aspect-square w-full touch-none select-none rounded-xl bg-ink p-2.5 ring-1 ring-line focus-visible:ring-accent"
+        className="relative mx-auto mt-6 aspect-square w-full max-w-[22rem] touch-none select-none rounded-xl bg-ink p-2.5 ring-1 ring-line focus-visible:ring-accent"
       >
         <div className="grid h-full w-full grid-cols-4 grid-rows-4 gap-2.5">
           {Array.from({ length: SIZE * SIZE }).map((_, i) => (

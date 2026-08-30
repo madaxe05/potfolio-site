@@ -6,6 +6,7 @@ import { Playground } from "@/components/Playground";
 import { Studios } from "@/components/Studios";
 import { Services } from "@/components/Services";
 import { Toolkit } from "@/components/Toolkit";
+import { ExperienceTree } from "@/components/ExperienceTree";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
@@ -35,6 +36,7 @@ export default function Home() {
         <Studios />
         <Services />
         <Toolkit />
+        <ExperienceTree />
         <About />
         <Contact />
       </main>

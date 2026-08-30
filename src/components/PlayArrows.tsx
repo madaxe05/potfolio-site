@@ -135,7 +135,7 @@ export function PlayArrows() {
         between it and the edge. Clear all nine.
       </p>
 
-      <div className="relative mt-6 aspect-square w-full rounded-xl bg-ink p-2.5 ring-1 ring-line">
+      <div className="relative mx-auto mt-6 aspect-square w-full max-w-[22rem] rounded-xl bg-ink p-2.5 ring-1 ring-line">
         <div className="grid h-full w-full grid-cols-5 grid-rows-5 gap-2">
           {Array.from({ length: SIZE * SIZE }).map((_, i) => (
             <div key={i} className="rounded-lg bg-surface-2/60" />

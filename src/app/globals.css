@@ -5,9 +5,10 @@
   Aesthetic: dark editorial. Honest label: this is native CSS + Tailwind v4,
   not a vendored design system.
 
-  THEME LOCK   : dark only. The whole page is one theme, no section inverts.
-  ACCENT LOCK  : --color-accent (#E8613F) is the ONLY accent on the page.
-                 5.86:1 against --color-ink, passes WCAG AA for body text.
+  THEME LOCK   : dark + light, toggled via [data-theme] on <html>. Same
+                 tokens either way, so no section-by-section inversion.
+  ACCENT LOCK  : --color-accent (#E8613F dark / #C8451F light) is the ONLY
+                 accent on the page. Both pass WCAG AA for body text.
   RADIUS LOCK  : media + cards = 16px (rounded-2xl)
                  buttons + chips = full pill (rounded-full)
                  nothing else introduces a third radius.
@@ -34,6 +35,28 @@
 
 :root {
   color-scheme: dark;
+}
+
+/* Light mode. Set by the inline script in layout.tsx before paint, and by
+   ThemeToggle after. Same variable names, so every component using them is
+   already theme-aware without a single component-level change. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-ink: #fdfdfc;
+  --color-surface: #f5f4f2;
+  --color-surface-2: #ebebe8;
+  --color-line: #d8d7d3;
+  --color-line-soft: #e4e3e0;
+  --color-fg: #16161a;
+  --color-muted: #55554f;
+  --color-faint: #83827a;
+  --color-accent: #c8451f;
+  --color-accent-ink: #fdfdfc;
+  --color-accent-wash: #fbe6dd;
+}
+
+body {
+  transition: background-color 0.3s var(--ease-out-expo), color 0.3s var(--ease-out-expo);
 }
 
 html {
