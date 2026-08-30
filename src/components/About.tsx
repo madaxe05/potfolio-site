@@ -17,7 +17,7 @@ export function About() {
           <Reveal index={1}>
             <div className="mt-10 space-y-6 text-lg leading-relaxed text-muted sm:text-xl">
               <p>
-                I am a Software Engineer at{" "}
+                I am a Software Developer at{" "}
                 <a
                   href={site.experience[0].href}
                   target="_blank"
@@ -26,8 +26,9 @@ export function About() {
                 >
                   Octacore Solutions
                 </a>
-                , where I started as an intern and stayed. Alongside that I ship
-                my own Android apps under two Play Store studios.
+                , where I interned for two months and moved into
+                the developer role a week ago. Alongside that I ship my own
+                Android apps under two Play Store studios.
               </p>
               <p>
                 Most of what I build has to run on someone else&apos;s phone,
@@ -47,7 +48,14 @@ export function About() {
               <ul className="mt-6 space-y-7">
                 {site.experience.map((e) => (
                   <li key={e.role + e.period}>
-                    <p className="font-mono text-xs text-faint">{e.period}</p>
+                    <p className="flex items-center gap-2 font-mono text-xs text-faint">
+                      {e.period}
+                      {e.current && (
+                        <span className="rounded-full bg-accent-wash px-2 py-0.5 text-[0.6rem] tracking-wide text-accent">
+                          current
+                        </span>
+                      )}
+                    </p>
                     <p className="mt-2 text-base text-fg">{e.role}</p>
                     <a
                       href={e.href}

@@ -33,23 +33,47 @@ function hslToHex(h: number, s: number, l: number) {
   return `#${f(0)}${f(8)}${f(4)}`;
 }
 
+const INK = "#0a0a0b";
+const PAPER = "#f4f4f3";
+const MIN_RATIO = 4.5;
+
 /**
- * Five-step harmony. Saturation and lightness are clamped to a band that stays
- * legible on the dark ground and keeps near-black text readable on the accent,
- * so retinting the page can never break contrast.
+ * Lifts lightness until the colour clears WCAG AA against the page ground.
+ *
+ * A fixed lightness is NOT a contrast clamp. At l=58 the blues land far darker
+ * than the oranges: hue 240 gives #4141e6 at 2.94:1, which would drag the
+ * site-wide focus ring and every accent button below AA the moment it was
+ * applied. This raises l in one-point steps until the ratio actually passes.
+ */
+function accessibleHex(hue: number, sat: number, lightness: number) {
+  let l = lightness;
+  let hex = hslToHex(hue, sat, l);
+  while (l < 92 && contrast(hex, INK) < MIN_RATIO) {
+    l += 1;
+    hex = hslToHex(hue, sat, l);
+  }
+  return hex;
+}
+
+/**
+ * Five-step harmony. The Accent step is guaranteed to clear AA against the page
+ * ground, because it is the one the page actually adopts.
  */
 function palette(hue: number) {
   const steps = [
-    { d: -32, s: 52, l: 74, role: "Tint" },
-    { d: -16, s: 62, l: 66, role: "Light" },
-    { d: 0, s: 77, l: 58, role: "Accent" },
-    { d: 18, s: 64, l: 44, role: "Deep" },
-    { d: 38, s: 46, l: 30, role: "Shade" },
+    { d: -32, s: 52, l: 74, role: "Tint", guard: false },
+    { d: -16, s: 62, l: 66, role: "Light", guard: false },
+    { d: 0, s: 77, l: 58, role: "Accent", guard: true },
+    { d: 18, s: 64, l: 44, role: "Deep", guard: false },
+    { d: 38, s: 46, l: 30, role: "Shade", guard: false },
   ];
-  return steps.map((st) => ({
-    role: st.role,
-    hex: hslToHex((hue + st.d + 360) % 360, st.s, st.l),
-  }));
+  return steps.map((st) => {
+    const h = (hue + st.d + 360) % 360;
+    return {
+      role: st.role,
+      hex: st.guard ? accessibleHex(h, st.s, st.l) : hslToHex(h, st.s, st.l),
+    };
+  });
 }
 
 /**
@@ -77,17 +101,43 @@ export function PaletteLab() {
   // Never leave the page retinted after this component goes away.
   useEffect(() => {
     return () => {
-      document.documentElement.style.removeProperty("--color-accent");
+      const root = document.documentElement.style;
+      root.removeProperty("--color-accent");
+      root.removeProperty("--color-accent-wash");
+      root.removeProperty("--color-accent-ink");
     };
   }, []);
 
+  /**
+   * Three tokens move together. --color-accent-wash and --color-accent-ink are
+   * both used *with* the accent (`bg-accent-wash text-accent`, `bg-accent
+   * text-accent-ink`), so overriding only the accent leaves blue text on a
+   * dark-orange tile. Ink flips to paper if that reads better on the new hue.
+   */
+  const applyTokens = (hex: string, h: number) => {
+    const root = document.documentElement.style;
+    root.setProperty("--color-accent", hex);
+    root.setProperty("--color-accent-wash", hslToHex(h, 60, 9));
+    root.setProperty(
+      "--color-accent-ink",
+      contrast(INK, hex) >= contrast(PAPER, hex) ? INK : PAPER
+    );
+  };
+
+  const clearTokens = () => {
+    const root = document.documentElement.style;
+    root.removeProperty("--color-accent");
+    root.removeProperty("--color-accent-wash");
+    root.removeProperty("--color-accent-ink");
+  };
+
   const apply = () => {
-    document.documentElement.style.setProperty("--color-accent", accent);
+    applyTokens(accent, hue);
     setApplied(true);
   };
 
   const restore = () => {
-    document.documentElement.style.removeProperty("--color-accent");
+    clearTokens();
     setHue(DEFAULT_HUE);
     setApplied(false);
   };
@@ -102,7 +152,7 @@ export function PaletteLab() {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 sm:p-7">
+    <div className="flex h-full flex-col">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="label">Try it</p>
@@ -137,8 +187,11 @@ export function PaletteLab() {
           max={359}
           value={hue}
           onChange={(e) => {
-            setHue(Number(e.target.value));
-            setApplied(false);
+            const next = Number(e.target.value);
+            setHue(next);
+            // If the page is already recoloured, follow the slider. Otherwise
+            // the swatches and readout describe a hue the page is not using.
+            if (applied) applyTokens(palette(next)[2].hex, next);
           }}
           className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full outline-none [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-fg [&::-webkit-slider-thumb]:ring-2 [&::-webkit-slider-thumb]:ring-ink [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-fg"
           style={{

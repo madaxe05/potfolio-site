@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import { categories, projects, type Category, type Project } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 import { Lightbox, type LightboxState } from "./Lightbox";
@@ -16,8 +17,11 @@ type Filter = Category | "all";
  * grid reflows with a layout animation and the active pill slides between
  * tabs (shared layoutId) instead of cutting.
  */
+const PREVIEW = 3;
+
 export function Work() {
   const [filter, setFilter] = useState<Filter>("all");
+  const [expanded, setExpanded] = useState(false);
   const [box, setBox] = useState<LightboxState>(null);
   const reduce = useReducedMotion();
 
@@ -27,10 +31,15 @@ export function Work() {
     return c;
   }, []);
 
-  const shown = useMemo(
+  const matching = useMemo(
     () => (filter === "all" ? projects : projects.filter((p) => p.category === filter)),
     [filter]
   );
+
+  // Three by default, the rest behind one button. A wall of fifteen cards is a
+  // worse first impression than three good ones.
+  const shown = expanded ? matching : matching.slice(0, PREVIEW);
+  const hidden = matching.length - shown.length;
 
   const openShots = useCallback((p: Project, index: number) => {
     if (!p.shots?.length) return;
@@ -69,7 +78,10 @@ export function Work() {
                 key={c.id}
                 type="button"
                 aria-pressed={active}
-                onClick={() => setFilter(c.id)}
+                onClick={() => {
+                  setFilter(c.id);
+                  setExpanded(false);
+                }}
                 className={`relative cursor-pointer rounded-full px-4 py-2 text-sm transition-colors duration-200 ${
                   active ? "text-accent-ink" : "text-muted hover:text-fg"
                 }`}
@@ -102,9 +114,14 @@ export function Work() {
         </div>
       </Reveal>
 
+      {/* A short status line, not aria-live on the grid itself, which would
+          re-read every card's full text on each filter change. */}
+      <p aria-live="polite" className="sr-only">
+        {`${shown.length} of ${matching.length} projects shown`}
+      </p>
+
       <motion.div
         layout={!reduce}
-        aria-live="polite"
         className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
       >
         <AnimatePresence mode="popLayout">
@@ -130,8 +147,27 @@ export function Work() {
         </AnimatePresence>
       </motion.div>
 
-      {shown.length === 0 && (
+      {matching.length === 0 && (
         <p className="mt-12 text-muted">Nothing in this category yet.</p>
+      )}
+
+      {(hidden > 0 || expanded) && matching.length > PREVIEW && (
+        <div className="mt-12 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="group inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-6 py-3.5 text-sm text-fg transition-all duration-200 hover:border-accent hover:text-accent active:scale-[0.98]"
+          >
+            {expanded ? "Show fewer" : `View all ${matching.length}`}
+            <CaretDownIcon
+              size={15}
+              aria-hidden
+              className={`transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                expanded ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        </div>
       )}
 
       <Lightbox state={box} onClose={closeBox} onMove={move} />

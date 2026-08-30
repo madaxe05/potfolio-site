@@ -113,4 +113,9 @@ body {
     width: 100%;
     justify-content: center;
   }
+  /* With the drift stopped, the duplicate halves would just render the same
+     nine icons over and over in a wrapped grid. */
+  .marquee-track > li[data-clone] {
+    display: none;
+  }
 }

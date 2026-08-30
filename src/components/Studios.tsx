@@ -10,7 +10,7 @@ export function Studios() {
     <section id="studios" className="border-y border-line-soft bg-surface/40">
       <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-32">
         <Reveal>
-          <SectionHeading className="max-w-[22ch]">Two studios I publish under</SectionHeading>
+          <SectionHeading className="max-w-[22ch]">Two Play Store studios</SectionHeading>
         </Reveal>
 
         <div className="mt-14 grid gap-6 lg:grid-cols-2">

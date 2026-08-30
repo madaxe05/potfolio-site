@@ -22,17 +22,23 @@ only thing you need to do to update the site.
 | `src/data/skills.ts` | The Toolkit section, grouped |
 | `src/data/demos.ts` | Demo site links for the "Want a website" section, and the pitch copy |
 
+The contact form posts to Formspree. Set `formspreeId` in `src/data/site.ts` to
+the id from your Formspree endpoint (the part after `/f/`) and the submit button
+goes live. Until then the form renders but will not send, on purpose.
+
 ## Things left for you
 
-1. **Demo site links.** `src/data/demos.ts` has two entries. Paste the rest as
+1. **Formspree id.** `src/data/site.ts` -> `formspreeId`. Without it the contact
+   form is inert.
+2. **Demo site links.** `src/data/demos.ts` has two entries. Paste the rest as
    `{ title, kind, href }`. An entry without `href` renders as text, not a dead link.
-2. **The domain.** `src/app/layout.tsx` falls back to
+3. **The domain.** `src/app/layout.tsx` falls back to
    `https://sohandhungel.vercel.app`. Set `NEXT_PUBLIC_SITE_URL` in Vercel to the
    real domain so the Open Graph image resolves.
-3. **Godot game links.** Realm Guard, Arrow Escape and Kingdom of Aetheria have no
+4. **Godot game links.** Realm Guard, Arrow Escape and Kingdom of Aetheria have no
    `href` because they are not pushed anywhere public. Add one when they ship and
    the card gains a link automatically.
-4. **HuePilot and Displayy** are published under a third developer account,
+5. **HuePilot and Displayy** are published under a third developer account,
    `S&S Coders 2`, not under Suso Studios or Mad Axe. The Studios section links
    only the two accounts you named. Say the word if you want the third added.
 
@@ -58,5 +64,13 @@ listings. `public/portrait.jpg` is the hero photo, resized to 1200x1600.
 - Elements that animate in from `opacity: 0` carry the `reveal` class. A
   `<noscript>` rule in `layout.tsx` forces them visible when JS is unavailable.
 - One accent colour, defined once as `--color-accent` in `globals.css`. The
-  palette lab overrides that single variable at runtime, which is why retinting
-  the whole page works.
+  palette lab overrides that token plus `--color-accent-wash` and
+  `--color-accent-ink` at runtime, which is why retinting the whole page works.
+  Its lightness clamp guarantees the applied accent clears WCAG AA against the
+  page ground for every hue.
+- **Game state never updates inside a setState updater.** React runs updaters
+  during render and double-invokes them under StrictMode, so scoring, storage
+  writes and `Math.random` all happen in the event handler, with refs mirroring
+  the live values.
+- `src/components/ShotRail.tsx` is built but not mounted. It was pulled from
+  `page.tsx` on request; re-adding it is one import and one line.

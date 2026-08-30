@@ -52,6 +52,16 @@ export function Lightbox({
       if (!focusable || focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+
+      // Clicking the screenshot, which is not focusable, drops focus onto
+      // document.body. Without this the next Tab escapes into the nav behind
+      // the overlay with no way back.
+      if (!panel.current?.contains(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+        return;
+      }
+
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();

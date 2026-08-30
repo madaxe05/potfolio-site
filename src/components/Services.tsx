@@ -1,6 +1,5 @@
 import { ArrowUpRightIcon, CheckIcon } from "@phosphor-icons/react/dist/ssr";
 import { demos, servicePitch } from "@/data/demos";
-import { site } from "@/data/site";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
@@ -37,7 +36,7 @@ export function Services() {
           </Reveal>
           <Reveal index={3}>
             <a
-              href={`mailto:${site.email}?subject=Website%20project`}
+              href="#contact"
               className="mt-10 inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-ink transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
             >
               Get in touch
@@ -53,8 +52,8 @@ export function Services() {
 
               {demos.length === 0 ? (
                 <p className="mt-5 max-w-[48ch] text-[0.95rem] leading-relaxed text-muted">
-                  Live demos are being prepared. Email me and I will send the
-                  current set, along with what each one was built to do.
+                  Live demos are being prepared. Ask through the form below and
+                  I will send the current set with what each one was built to do.
                 </p>
               ) : (
                 <ul className="mt-6 divide-y divide-line-soft">

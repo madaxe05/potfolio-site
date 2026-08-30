@@ -28,6 +28,9 @@ export default function Home() {
         <Hero />
         <AppMarquee />
         <Work />
+        {/* 2026-08-30: ShotRail (the pinned "every screen" rail) pulled at
+            Sohan's request. Component kept at src/components/ShotRail.tsx, so
+            re-adding it is one import and one line. */}
         <Playground />
         <Studios />
         <Services />

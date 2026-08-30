@@ -7,7 +7,9 @@ import {
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
+  useScroll,
   useSpring,
+  useTransform,
 } from "motion/react";
 import { ArrowDownIcon, ArrowRightIcon } from "@phosphor-icons/react";
 import { shipped } from "@/data/projects";
@@ -29,6 +31,17 @@ export function Hero() {
   const wrap = useRef<HTMLElement>(null);
   // Measured on enter, not per move. getBoundingClientRect forces a layout read.
   const rect = useRef<DOMRect | null>(null);
+
+  // Portrait drifts slower than the page. Transform only, so it composites.
+  const { scrollYProgress } = useScroll({
+    target: wrap,
+    offset: ["start start", "end start"],
+  });
+  // Ranges collapse under reduced motion rather than the style being dropped.
+  // Branching the style itself would desync hydration, since useReducedMotion
+  // is null on the server and a real boolean on the client's first render.
+  const portraitY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "14%"]);
+  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.08]);
 
   // Cursor-tracked light across the name. Motivation: the first thing on the
   // page answers a pointer, which tells the reader this page is not a poster.
@@ -143,14 +156,19 @@ export function Hero() {
           className="reveal relative lg:col-span-5"
         >
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-line bg-surface">
-            <Image
-              src="/portrait.jpg"
-              alt="Sohan Dhungel"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              className="object-cover object-[50%_28%] contrast-[1.04] saturate-[0.8]"
-            />
+            <motion.div
+              style={{ y: portraitY, scale: portraitScale }}
+              className="absolute inset-0"
+            >
+              <Image
+                src="/portrait.jpg"
+                alt="Sohan Dhungel"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover object-[50%_28%] contrast-[1.04] saturate-[0.8]"
+              />
+            </motion.div>
             {/* Scrim: settles a bright daylight photo into the dark page. */}
             <div
               aria-hidden

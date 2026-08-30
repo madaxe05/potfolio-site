@@ -61,9 +61,11 @@ function step(tiles: Tile[], dir: Dir): { tiles: Tile[]; gained: number; moved: 
       const c = vertical ? line : cursor;
 
       if (b && b.value === a.value) {
-        const value = a.value * 2;
-        gained += value;
-        next.push({ id: a.id, value, r, c, merged: true });
+        // The survivor takes b's id. b is the tile further from the edge, so
+        // `layout` animates it travelling into the merge, instead of a ghost
+        // fading out where it used to sit.
+        gained += a.value * 2;
+        next.push({ id: b.id, value: a.value * 2, r, c, merged: true });
         moved = true;
         i += 2;
       } else {
@@ -101,10 +103,16 @@ function tileStyle(v: number) {
 /**
  * Merge 1024, playable.
  *
- * Motion weighting: Jhey primary here. This is a game, so tile arrival is
- * allowed to be expressive. Movement uses Motion's `layout`, so tiles travel
- * between grid cells instead of teleporting, and a merged tile gets a short
- * spring pop as its only celebration. Under reduced motion every tile snaps.
+ * Every bit of game computation happens in the event handler, never inside a
+ * setState updater. React runs updaters during render and double-invokes them
+ * under StrictMode, which Next enables by default, so a `setTiles(cur => ...)`
+ * that also scored, wrote localStorage and called Math.random would double the
+ * score in development. Refs mirror the live values so the handler can read
+ * them without a functional update.
+ *
+ * Motion weighting: Jhey. This is a game, so tile arrival can be expressive.
+ * Movement uses Motion's `layout` so tiles travel between cells, and a merged
+ * tile gets one short spring pop. Under reduced motion everything snaps.
  */
 export function PlayMerge() {
   const reduce = useReducedMotion();
@@ -113,62 +121,89 @@ export function PlayMerge() {
   const [best, setBest] = useState(0);
   const [won, setWon] = useState(false);
   const [over, setOver] = useState(false);
-  const boardRef = useRef<HTMLDivElement>(null);
+  const [announce, setAnnounce] = useState("");
+
+  const tilesRef = useRef<Tile[]>([]);
+  const scoreRef = useRef(0);
+  const bestRef = useRef(0);
+  const lockedRef = useRef(false);
   const touch = useRef<{ x: number; y: number } | null>(null);
 
   const reset = useCallback(() => {
-    setTiles(start());
+    const fresh = start();
+    tilesRef.current = fresh;
+    scoreRef.current = 0;
+    lockedRef.current = false;
+    setTiles(fresh);
     setScore(0);
     setWon(false);
     setOver(false);
+    setAnnounce("New board dealt.");
   }, []);
 
-  // Board and best score are seeded on the client only. Random tiles and a
-  // localStorage value rendered on the server would both guarantee a hydration
-  // mismatch, and neither has a client-safe value available during render, so
-  // first-mount initialisation genuinely belongs in an effect here.
+  // Client-only seed. A random board or a localStorage value rendered on the
+  // server would guarantee a hydration mismatch, and neither has a client-safe
+  // value available during render.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     reset();
     try {
-      const stored = window.localStorage.getItem(BEST_KEY);
-      if (stored) setBest(Number(stored) || 0);
+      const stored = Number(window.localStorage.getItem(BEST_KEY)) || 0;
+      bestRef.current = stored;
+      setBest(stored);
     } catch {
       /* private mode or blocked storage, best score just stays 0 */
     }
   }, [reset]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
-  const play = useCallback(
-    (dir: Dir) => {
-      setTiles((current) => {
-        if (current.length === 0) return current;
-        const res = step(current, dir);
-        if (!res.moved) return current;
+  const play = useCallback((dir: Dir) => {
+    // Won or lost boards stop accepting input, so the score cannot keep
+    // climbing on a board hidden behind the overlay.
+    if (lockedRef.current) return;
+    const current = tilesRef.current;
+    if (current.length === 0) return;
 
-        const grown = spawn(res.tiles);
-        if (res.gained > 0) {
-          setScore((s) => {
-            const total = s + res.gained;
-            setBest((b) => {
-              if (total <= b) return b;
-              try {
-                window.localStorage.setItem(BEST_KEY, String(total));
-              } catch {
-                /* ignore */
-              }
-              return total;
-            });
-            return total;
-          });
+    const res = step(current, dir);
+    if (!res.moved) return;
+
+    const grown = spawn(res.tiles);
+    tilesRef.current = grown;
+    setTiles(grown);
+
+    if (res.gained > 0) {
+      const total = scoreRef.current + res.gained;
+      scoreRef.current = total;
+      setScore(total);
+      if (total > bestRef.current) {
+        bestRef.current = total;
+        setBest(total);
+        try {
+          window.localStorage.setItem(BEST_KEY, String(total));
+        } catch {
+          /* ignore */
         }
-        if (grown.some((t) => t.value >= TARGET)) setWon(true);
-        if (stuck(grown)) setOver(true);
-        return grown;
-      });
-    },
-    []
-  );
+      }
+    }
+
+    const highest = grown.reduce((m, t) => Math.max(m, t.value), 0);
+    setAnnounce(
+      `Moved ${dir}. Highest tile ${highest}. Score ${scoreRef.current}. ${grown.length} tiles on the board.`
+    );
+
+    if (highest >= TARGET) {
+      lockedRef.current = true;
+      setWon(true);
+    } else if (stuck(grown)) {
+      lockedRef.current = true;
+      setOver(true);
+    }
+  }, []);
+
+  const keepPlaying = () => {
+    lockedRef.current = false;
+    setWon(false);
+  };
 
   // Arrow keys are bound to the board, not the window, so the page still
   // scrolls normally when the game is not focused.
@@ -183,7 +218,9 @@ export function PlayMerge() {
       a: "left",
       d: "right",
     };
-    const dir = map[e.key];
+    // Normalised, or a shifted or caps-locked "W" falls through as page input.
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    const dir = map[key];
     if (!dir) return;
     e.preventDefault();
     play(dir);
@@ -191,8 +228,9 @@ export function PlayMerge() {
 
   const onPointerDown = (e: React.PointerEvent) => {
     touch.current = { x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture?.(e.pointerId);
   };
-  const onPointerUp = (e: React.PointerEvent) => {
+  const endGesture = (e: React.PointerEvent) => {
     const from = touch.current;
     touch.current = null;
     if (!from) return;
@@ -209,38 +247,35 @@ export function PlayMerge() {
     : ({ type: "spring", stiffness: 520, damping: 38, mass: 0.7 } as const);
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 sm:p-7">
+    <div className="flex h-full flex-col">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="label">Playable</p>
           <h3 className="mt-1.5 text-xl font-medium tracking-tight text-fg">Merge 1024</h3>
         </div>
         <div className="flex items-center gap-2">
-          <div className="rounded-xl border border-line-soft px-3 py-2 text-right">
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-faint">
-              Score
-            </p>
-            <p aria-live="polite" className="font-mono text-sm text-fg">
-              {score}
-            </p>
-          </div>
-          <div className="rounded-xl border border-line-soft px-3 py-2 text-right">
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-faint">
-              Best
-            </p>
-            <p className="font-mono text-sm text-fg">{best}</p>
-          </div>
+          <Stat label="Score" value={score} />
+          <Stat label="Best" value={best} />
         </div>
       </div>
 
+      <p className="mt-4 text-[0.9rem] leading-relaxed text-muted">
+        Slide every tile at once. Equal numbers merge. Push a single tile all the
+        way to 1024.
+      </p>
+
       <div
-        ref={boardRef}
-        role="application"
-        aria-label="Merge 1024. Use arrow keys or swipe to move tiles."
+        role="grid"
+        aria-label="Merge 1024 board. Arrow keys or WASD to move every tile."
+        aria-rowcount={SIZE}
+        aria-colcount={SIZE}
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
+        onPointerUp={endGesture}
+        onPointerCancel={() => {
+          touch.current = null;
+        }}
         className="relative mt-6 aspect-square w-full touch-none select-none rounded-xl bg-ink p-2.5 ring-1 ring-line focus-visible:ring-accent"
       >
         <div className="grid h-full w-full grid-cols-4 grid-rows-4 gap-2.5">
@@ -254,13 +289,15 @@ export function PlayMerge() {
             {tiles.map((t) => (
               <motion.div
                 key={t.id}
+                role="gridcell"
+                aria-label={`Row ${t.r + 1}, column ${t.c + 1}, ${t.value}`}
                 layout={!reduce}
-                initial={reduce ? false : { scale: 0.6, opacity: 0 }}
+                initial={{ scale: 0.6, opacity: 0 }}
                 animate={{
                   scale: t.merged && !reduce ? [1.16, 1] : 1,
                   opacity: 1,
                 }}
-                exit={reduce ? undefined : { opacity: 0, scale: 0.85 }}
+                exit={{ opacity: 0, scale: 0.85 }}
                 transition={spring}
                 style={{ gridRowStart: t.r + 1, gridColumnStart: t.c + 1 }}
                 className={`flex items-center justify-center rounded-lg font-mono text-[clamp(0.8rem,2.6vw,1.35rem)] font-medium tabular-nums ${tileStyle(
@@ -276,31 +313,50 @@ export function PlayMerge() {
         <AnimatePresence>
           {(over || won) && (
             <motion.div
-              initial={reduce ? false : { opacity: 0 }}
+              initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: reduce ? 0 : 0.25 }}
-              className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl bg-ink/85 backdrop-blur-sm"
+              className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl bg-ink/85 p-4 backdrop-blur-sm"
             >
-              <p className="flex items-center gap-2 text-lg text-fg">
+              <p className="flex items-center gap-2 text-center text-lg text-fg">
                 {won && <TrophyIcon size={20} aria-hidden className="text-accent" />}
                 {won ? `You hit ${TARGET}` : "No moves left"}
               </p>
-              <button
-                type="button"
-                onClick={reset}
-                className="cursor-pointer rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-110 active:scale-[0.98]"
-              >
-                Play again
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {won && (
+                  <button
+                    type="button"
+                    onClick={keepPlaying}
+                    className="cursor-pointer rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-110 active:scale-[0.98]"
+                  >
+                    Keep playing
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={reset}
+                  className={`cursor-pointer rounded-full px-5 py-2.5 text-sm font-medium transition-transform duration-200 active:scale-[0.98] ${
+                    won
+                      ? "border border-line text-fg hover:border-accent hover:text-accent"
+                      : "bg-accent text-accent-ink hover:brightness-110"
+                  }`}
+                >
+                  {won ? "New board" : "Play again"}
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
+      <p aria-live="polite" className="sr-only">
+        {announce}
+      </p>
+
       <div className="mt-5 flex items-center justify-between gap-3">
         <p className="font-mono text-[0.68rem] tracking-wide text-faint">
-          Arrow keys, WASD, or swipe
+          Arrow keys, WASD, or drag
         </p>
         <button
           type="button"
@@ -312,8 +368,9 @@ export function PlayMerge() {
         </button>
       </div>
 
-      {/* On-screen controls: the game must be usable without a keyboard. */}
-      <div className="mt-5 grid grid-cols-3 gap-2 sm:hidden">
+      {/* Shown at every width. At desktop sizes the drag gesture works but is
+          undiscoverable, so this pad is the only visible affordance. */}
+      <div className="mt-5 grid max-w-[13rem] grid-cols-3 gap-2">
         <span />
         <PadButton label="Up" onClick={() => play("up")} rotate={-90} />
         <span />
@@ -321,6 +378,17 @@ export function PlayMerge() {
         <PadButton label="Down" onClick={() => play("down")} rotate={90} />
         <PadButton label="Right" onClick={() => play("right")} rotate={0} />
       </div>
+    </div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-xl border border-line-soft px-3 py-2 text-right">
+      <p className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-faint">
+        {label}
+      </p>
+      <p className="font-mono text-sm text-fg">{value}</p>
     </div>
   );
 }
@@ -339,7 +407,7 @@ function PadButton({
       type="button"
       onClick={onClick}
       aria-label={`Move ${label.toLowerCase()}`}
-      className="flex h-11 cursor-pointer items-center justify-center rounded-xl border border-line text-fg transition-all duration-150 active:scale-95 active:border-accent"
+      className="flex h-11 cursor-pointer items-center justify-center rounded-xl border border-line text-fg transition-all duration-150 hover:border-accent active:scale-95 active:border-accent"
     >
       <span style={{ transform: `rotate(${rotate}deg)` }} aria-hidden>
         &rarr;

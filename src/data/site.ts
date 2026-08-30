@@ -9,20 +9,30 @@ export const site = {
   instagram: "https://www.instagram.com/sohandhungel_/",
   cv: "/sohan-dhungel-cv.pdf",
 
+  /**
+   * Formspree endpoint for the contact form.
+   * TODO Sohan: create a form at formspree.io, paste its id here (the bit after
+   * /f/ in the endpoint, e.g. "xdkogqzy"). Until then the form shows a short
+   * note instead of a submit button, so nothing silently swallows a message.
+   */
+  formspreeId: "",
+
   experience: [
     {
-      role: "Software Engineer",
+      role: "Software Developer",
       org: "Octacore Solutions",
       href: "https://octacore.com.np",
-      period: "Present",
-      note: "Building and shipping production software with the team.",
+      period: "1 week",
+      current: true,
+      note: "Moved into the developer role after the internship. Building and shipping production software with the team.",
     },
     {
-      role: "Intern",
+      role: "Software Engineering Intern",
       org: "Octacore Solutions",
       href: "https://octacore.com.np",
-      period: "Before joining full time",
-      note: "Interned with the same team before moving into the engineering role.",
+      period: "2 months",
+      current: false,
+      note: "Worked across the delivery cycle, from feature development through testing and release.",
     },
   ],
 

@@ -99,6 +99,7 @@ export function Nav() {
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
+          aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
           className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-line text-fg md:hidden"
         >
