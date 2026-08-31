@@ -30,6 +30,11 @@ export const demos: Demo[] = [
     href: "https://furniture-demo-lovat.vercel.app",
   },
   {
+    title: "Vercel Clothing brand",
+    kind: "Clothing brand site",
+    href: "https://vortex-clothing-brand.vercel.app",
+  },
+  {
     title: "Clothing brand",
     kind: "Clothing brand site",
     href: "https://clothing-brand-ten-nu.vercel.app",
