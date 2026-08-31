@@ -9,13 +9,8 @@ export const site = {
   instagram: "https://www.instagram.com/sohandhungel_/",
   cv: "/sohan-dhungel-cv.pdf",
 
-  /**
-   * Formspree endpoint for the contact form.
-   * TODO Sohan: create a form at formspree.io, paste its id here (the bit after
-   * /f/ in the endpoint, e.g. "xdkogqzy"). Until then the form shows a short
-   * note instead of a submit button, so nothing silently swallows a message.
-   */
-  formspreeId: "",
+  /** Formspree form id (the bit after /f/ in the endpoint). */
+  formspreeId: "mljegban",
 
   experience: [
     {
