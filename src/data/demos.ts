@@ -34,6 +34,11 @@ export const demos: Demo[] = [
     kind: "Clothing brand site",
     href: "https://clothing-brand-ten-nu.vercel.app",
   },
+  {
+    title: "GYM",
+    kind: "Fitness site",
+    href: "https://fitness-hub-two.vercel.app",
+  },
 ];
 
 export const servicePitch = {
