@@ -13,11 +13,7 @@ export type Demo = {
  * Nothing else needs to change, the section renders whatever is in this array.
  */
 export const demos: Demo[] = [
-  {
-    title: "This portfolio",
-    kind: "Personal site",
-    href: "https://github.com/madaxe05/potfolio-site",
-  },
+ 
   {
     title: "Ember and Olive",
     kind: "Restaurant site",
@@ -31,12 +27,12 @@ export const demos: Demo[] = [
   {
     title: "Furniture demo",
     kind: "Furniture site",
-    href: "https://furniture-demo-le6w4po62-madaxe05s-projects.vercel.app",
+    href: "https://furniture-demo-lovat.vercel.app",
   },
   {
     title: "Clothing brand",
     kind: "Clothing brand site",
-    href: "https://clothing-brand-qlfg757lj-madaxe05s-projects.vercel.app",
+    href: "https://clothing-brand-ten-nu.vercel.app",
   },
 ];
 
