@@ -6,7 +6,7 @@ import { Reveal } from "./Reveal";
 export function ExperienceTree() {
   return (
     <section id="journey" className="border-t border-line-soft bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-5 py-24 text-center sm:px-8 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 text-center sm:px-8 md:py-24">
         <Reveal>
           <SectionHeading className="mx-auto max-w-[18ch] text-center">
             The road so far

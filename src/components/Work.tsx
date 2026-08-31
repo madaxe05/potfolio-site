@@ -57,7 +57,7 @@ export function Work() {
   const closeBox = useCallback(() => setBox(null), []);
 
   return (
-    <section id="work" className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-32">
+    <section id="work" className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
       <Reveal>
         <SectionHeading>Selected work</SectionHeading>
       </Reveal>

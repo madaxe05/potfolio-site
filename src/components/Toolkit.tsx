@@ -12,7 +12,7 @@ export function Toolkit() {
       id="toolkit"
       className="border-y border-line-soft bg-surface/40"
     >
-      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
         <Reveal>
           <SectionHeading className="max-w-[16ch]">What I build with</SectionHeading>
         </Reveal>

@@ -19,7 +19,7 @@ const socials = [
 export function Contact() {
   return (
     <section id="contact" className="border-t border-line-soft bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <Reveal>

@@ -49,7 +49,7 @@ export function Playground() {
 
   return (
     <section id="playground" className="border-y border-line-soft bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
         <Reveal>
           <SectionHeading className="max-w-[20ch]">
             Some of it runs right here
@@ -64,7 +64,7 @@ export function Playground() {
 
         <div className="mt-14 grid gap-6 lg:grid-cols-12 lg:gap-8">
           <Reveal index={1} className="min-w-0 lg:col-span-4">
-            <ul className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:gap-2 lg:overflow-visible lg:pb-0">
+            <ul className="flex gap-2 overflow-x-auto pb-1 pr-5 lg:flex-col lg:gap-2 lg:overflow-visible lg:pb-0 lg:pr-0">
               {panels.map((p) => {
                 const on = active === p.id;
                 return (

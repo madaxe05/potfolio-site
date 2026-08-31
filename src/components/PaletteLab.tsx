@@ -98,16 +98,6 @@ export function PaletteLab() {
     return () => clearTimeout(t);
   }, [copied]);
 
-  // Never leave the page retinted after this component goes away.
-  useEffect(() => {
-    return () => {
-      const root = document.documentElement.style;
-      root.removeProperty("--color-accent");
-      root.removeProperty("--color-accent-wash");
-      root.removeProperty("--color-accent-ink");
-    };
-  }, []);
-
   /**
    * Three tokens move together. --color-accent-wash and --color-accent-ink are
    * both used *with* the accent (`bg-accent-wash text-accent`, `bg-accent
