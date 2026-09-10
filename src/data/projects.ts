@@ -147,6 +147,34 @@ export const projects: Project[] = [
 
   // --------------------------------------------------------------- games
   {
+    slug: "jetpack-max",
+    title: "Jetpack Max",
+    blurb:
+      "Fast-paced endless jetpack runner. Tap to fly, dodge tricky obstacles, avoid lethal traps and collect coins to chase high scores.",
+    status: "Live on Google Play",
+    category: "games",
+    stack: ["Godot 4", "GDScript", "Android"],
+    href: play("com.madaxe.jetpack"),
+    hrefLabel: "Play Store",
+    studio: "Mad Axe",
+    icon: "/apps/jetpack-max-icon.png",
+    shots: shots("jetpack-max", 4),
+  },
+  {
+    slug: "daily-word",
+    title: "Daily Word",
+    blurb:
+      "Word puzzle game with 4 to 8 letter hidden word challenges, daily streak tracking, clue hints, and an unlimited practice mode.",
+    status: "Live on Google Play",
+    category: "games",
+    stack: ["Flutter", "Android"],
+    href: play("com.madaxe.sohan.dailyword"),
+    hrefLabel: "Play Store",
+    studio: "Mad Axe",
+    icon: "/apps/daily-word-icon.png",
+    shots: shots("daily-word", 4),
+  },
+  {
     slug: "merge-1024",
     title: "Merge 1024",
     blurb:
@@ -240,7 +268,7 @@ export const studios = [
   {
     name: "Mad Axe",
     href: "https://play.google.com/store/apps/developer?id=Mad+Axe",
-    blurb: "Reference and companion apps for players.",
+    blurb: "Arcade games, word puzzles and companion apps.",
     apps: projects.filter((p) => p.studio === "Mad Axe"),
   },
 ];

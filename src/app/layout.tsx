@@ -10,16 +10,17 @@ const description =
   "Software Engineer at Octacore Solutions, Kathmandu. Android apps and games live on Google Play, plus Godot games, Ethereum contracts and machine learning work.";
 
 export const metadata: Metadata = {
-  // TODO Sohan: set NEXT_PUBLIC_SITE_URL to your real domain on Vercel so
-  // the Open Graph image resolves to an absolute URL.
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://sohandhungel.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://sohandhungel.com.np"
   ),
   title: {
     default: `${site.name} - Software Developer`,
     template: `%s - ${site.name}`,
   },
   description,
+  verification: {
+    google: "google43be77e09518cf7b",
+  },
   authors: [{ name: site.name, url: site.github }],
   keywords: [
     "Sohan Dhungel",

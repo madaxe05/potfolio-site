@@ -72,7 +72,7 @@ export function ShotRail() {
         <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
           <p className="label">Every screen</p>
           <h2 className="mt-3 text-[clamp(1.75rem,4vw,3rem)] font-medium leading-[1] tracking-[-0.035em]">
-            Nine apps, up close
+            Eleven apps, up close
           </h2>
         </div>
         <motion.div ref={track} style={{ x }} className="mt-10 flex w-max gap-5 px-5 sm:px-8">
