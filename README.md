@@ -39,7 +39,7 @@ goes live. Until then the form renders but will not send, on purpose.
    `href` because they are not pushed anywhere public. Add one when they ship and
    the card gains a link automatically.
 5. **HuePilot and Displayy** are published under a third developer account,
-   `S&S Coders 2`, not under Suso Studios or Mad Axe. The Studios section links
+   `S&S Coders 2`, not under Veritas Studios or Mad Axe. The Studios section links
    only the two accounts you named. Say the word if you want the third added.
 
 ## The CV
