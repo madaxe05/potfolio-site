@@ -5,9 +5,36 @@
   <meta charset="utf-8" />
   <title>Sohan Dhungel - CV</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
   <style>
+    /* Static Inter, not the Google Fonts variable build. Chrome's PDF of
+         the variable font has a broken text layer: ATS parsers read
+         "2026" as "2 26" and split words mid-letter. */
+    @font-face {
+      font-family: "Inter";
+      font-weight: 400;
+      src: url(https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-400-normal.woff) format("woff");
+    }
+
+    @font-face {
+      font-family: "Inter";
+      font-weight: 500;
+      src: url(https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-500-normal.woff) format("woff");
+    }
+
+    @font-face {
+      font-family: "Inter";
+      font-weight: 600;
+      src: url(https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-600-normal.woff) format("woff");
+    }
+
+    @font-face {
+      font-family: "Inter";
+      font-weight: 700;
+      src: url(https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-700-normal.woff) format("woff");
+    }
+
     @page {
       size: A4;
       margin: 10mm 12mm;
@@ -142,11 +169,12 @@
       margin: 0;
     }
 
-    /* Published apps: a plain two-column list, name then stack, no
-         dotted separators pretending to be a UI component. */
+    /* Published apps: a plain list, name then stack, no dotted
+         separators pretending to be a UI component. One column since
+         2026-09-23: two columns made ATS parsers read names out of order. */
     .apps {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 1.5px 18px;
       margin-top: 4px;
     }
@@ -190,10 +218,11 @@
 
   <h2>Profile</h2>
   <p class="lede">
-    Computer Engineering graduate (Tribhuvan University, 2026), now a
-    Software Developer at Octacore Solutions in Kathmandu. I ship Flutter
-    apps end to end under two Google Play accounts, and build outside of
-    work in Godot and Solidity. Comfortable owning a feature from data model to release.
+    Software Developer at Octacore Solutions, Kathmandu, working across web
+    development, application development and machine learning. Computer
+    Engineering graduate (Tribhuvan University, 2026), with a Solidity and
+    Ethereum document verification system as my major project. Outside work
+    I build and publish Flutter apps on Google Play and make games in Godot.
   </p>
 
   <h2>Experience</h2>
@@ -206,7 +235,8 @@
       <a href="https://octacore.com.np">Octacore Solutions</a>, Kathmandu
     </p>
     <ul>
-      <li>Kept on after the internship below to work on the same production codebase full-time.</li>
+      <li>Build websites and applications, and work on machine learning features, in the company's production codebase.</li>
+      <li>Kept on full-time after the internship below.</li>
     </ul>
   </div>
   <div class="entry">
@@ -225,15 +255,15 @@
 
   <h2>Published Applications</h2>
   <p class="sub" style="margin-bottom: 0">
-    Production apps live on Google Play across two developer accounts,
+    Side projects, built and published solo on Google Play under my accounts
     <a href="https://play.google.com/store/apps/developer?id=Veritas+Studios&hl=en">Veritas Studios</a>
     and
-    <a href="https://play.google.com/store/apps/developer?id=Mad+Axe">Mad Axe</a>:
-    build, publish, and the store listing, all handled solo.
+    <a href="https://play.google.com/store/apps/developer?id=Mad+Axe">Mad Axe</a>.
+    HuePilot and Displayy shipped earlier on another developer's account.
   </p>
   <div class="apps">
     <div class="app">
-      <span>Veritas Subscription Guard, tracks renewals</span><span>Flutter, Riverpod, Drift</span>
+      <span>Veritas Subscription Tracker, tracks renewals</span><span>Flutter, Riverpod, Drift</span>
     </div>
     <div class="app"><span>Veritas PDF, offline PDF toolkit</span><span>Flutter</span></div>
     <div class="app">
@@ -242,9 +272,11 @@
     <div class="app"><span>ColorJoy, 827-page kids colouring book</span><span>Flutter, offline</span></div>
     <div class="app"><span>HuePilot, colour palette generator</span><span>Flutter, Firebase</span></div>
     <div class="app"><span>Displayy, solid-colour screen fill</span><span>Flutter</span></div>
+    <!-- Removed 2026-09-23: cheat-code apps read as filler to employers.
     <div class="app"><span>GTA Cheats: All Codes</span><span>Flutter, AdMob</span></div>
     <div class="app"><span>GTA 6 Cheat Codes</span><span>Flutter</span></div>
-    <div class="app"><span>Merge 1024, puzzle game</span><span>Flutter</span></div>
+    -->
+    <div class="app"><span>1028 Merge, number puzzle</span><span>Flutter</span></div>
     <div class="app"><span>Jetpack Max, arcade flying game</span><span>Godot 4</span></div>
     <div class="app"><span>Daily Word, word guess game</span><span>Flutter</span></div>
   </div>
@@ -252,7 +284,7 @@
   <h2>Selected Projects</h2>
   <div class="entry">
     <div class="line">
-      <span class="title">Blockchain Document Verification</span>
+      <span class="title">Blockchain Document Verification (BE Major Project)</span>
       <span class="meta">Solidity, React, Node</span>
     </div>
     <p class="desc">
@@ -314,7 +346,9 @@
     <dd>Git, GitHub, VS Code, Figma, Godot 4, Google Colab, MATLAB, LaTeX</dd>
   </dl>
 
-  <div class="two">
+  <!-- 2026-09-23: Education now full width; the .two grid held Activities
+       beside it. Class kept in the CSS for reuse. -->
+  <div>
     <div>
       <h2>Education</h2>
       <div class="entry">
@@ -336,7 +370,17 @@
           Hetauda School of Management, Hetauda<br />PCM and Computer Science
         </p>
       </div>
+      <div class="entry">
+        <span class="title">Relevant Coursework</span>
+        <p class="sub">
+          Data Structures and Algorithms, Machine Learning and AI,
+          Software Engineering, Data Mining, Project Management, MySQL,
+          UML.
+        </p>
+      </div>
     </div>
+    <!-- Removed 2026-09-23: Activities repeated the hackathon already under
+         Selected Projects; coursework moved into Education above.
     <div>
       <h2>Activities</h2>
       <div class="entry">
@@ -360,6 +404,7 @@
         </p>
       </div>
     </div>
+    -->
   </div>
 </body>
 
