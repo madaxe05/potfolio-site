@@ -25,22 +25,22 @@ export const demos: Demo[] = [
     href: "https://himalayan-brew-cafe.vercel.app",
   },
   {
-    title: "Furniture demo",
+    title: "Aurelia",
     kind: "Furniture site",
     href: "https://furniture-demo-lovat.vercel.app",
   },
   {
-    title: "Vercel Clothing brand",
+    title: "Vertex",
     kind: "Clothing brand site",
     href: "https://vortex-clothing-brand.vercel.app",
   },
   {
-    title: "Clothing brand",
+    title: "Maison Noir",
     kind: "Clothing brand site",
     href: "https://clothing-brand-ten-nu.vercel.app",
   },
   {
-    title: "GYM",
+    title: "Fitness Hub",
     kind: "Fitness site",
     href: "https://fitness-hub-two.vercel.app",
   },

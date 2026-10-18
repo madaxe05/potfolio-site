@@ -1,23 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
 import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-} from "motion/react";
-import { ArrowUpRightIcon, GithubLogoIcon, GooglePlayLogoIcon } from "@phosphor-icons/react";
+  ArrowUpRightIcon,
+  ImagesIcon,
+  GithubLogoIcon,
+  GooglePlayLogoIcon,
+} from "@phosphor-icons/react";
 import type { Project } from "@/data/projects";
 
-/**
- * Motivation: feedback. A spotlight follows the pointer across the card and
- * the card tilts a degree or two toward it, so the surface reacts to where you
- * actually are. Driven entirely by motion values, never useState, so it does
- * not re-render React on every pointer move.
- */
+const previewIndices: Record<string, number[]> = {
+  "veritas-guard": [1, 2],
+  "ai-calendar": [1, 2],
+  grocressy: [1, 2],
+  colorjoy: [1, 2],
+  "daily-word": [1, 2],
+  "gta-cheats": [1, 2],
+  "gta6-cheats": [3],
+  "merge-1024": [2, 3],
+};
+
 export function ProjectCard({
   project,
   onOpenShots,
@@ -25,148 +27,143 @@ export function ProjectCard({
   project: Project;
   onOpenShots: (p: Project, index: number) => void;
 }) {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-
-  const px = useMotionValue(50);
-  const py = useMotionValue(50);
-  const rx = useSpring(useMotionValue(0), { stiffness: 220, damping: 22 });
-  const ry = useSpring(useMotionValue(0), { stiffness: 220, damping: 22 });
-
-  const spotlight = useMotionTemplate`radial-gradient(340px circle at ${px}% ${py}%, rgba(232,97,63,0.14), transparent 72%)`;
-
-  // Measured once per hover, not once per move. getBoundingClientRect forces a
-  // layout read, and the card box only changes on scroll, resize or a refilter.
-  const rect = useRef<DOMRect | null>(null);
-
-  const onPointerEnter = () => {
-    rect.current = ref.current?.getBoundingClientRect() ?? null;
-  };
-
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (reduce) return;
-    const r = rect.current ?? ref.current?.getBoundingClientRect();
-    if (!r) return;
-    const x = (e.clientX - r.left) / r.width;
-    const y = (e.clientY - r.top) / r.height;
-    px.set(x * 100);
-    py.set(y * 100);
-    ry.set((x - 0.5) * 5);
-    rx.set((0.5 - y) * 5);
-  };
-
-  const onPointerLeave = () => {
-    rect.current = null;
-    rx.set(0);
-    ry.set(0);
-    px.set(50);
-    py.set(50);
-  };
-
   const shots = project.shots ?? [];
+  const indices = previewIndices[project.slug] ?? [0, 1];
+  const landscape = project.slug === "jetpack-max";
   const LinkIcon =
     project.hrefLabel === "GitHub" ? GithubLogoIcon : GooglePlayLogoIcon;
-
   return (
-    <motion.div
-      ref={ref}
-      layout
-      onPointerEnter={onPointerEnter}
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
-      // Always rendered, never branched on useReducedMotion, or the server and
-      // the hydrating client disagree on the transform. The springs rest at 0
-      // and onPointerMove early-returns under reduced motion, so nothing tilts.
-      style={{ rotateX: rx, rotateY: ry, transformPerspective: 1200 }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-6 sm:p-7"
-    >
-      <motion.div
-        aria-hidden
-        style={{ background: spotlight }}
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
-
-      <div className="relative flex items-start gap-4">
-        {project.icon ? (
-          <Image
-            src={project.icon}
-            alt=""
-            width={56}
-            height={56}
-            className="size-14 shrink-0 rounded-2xl ring-1 ring-line"
-          />
-        ) : (
-          <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-accent-wash text-lg font-medium text-accent ring-1 ring-line">
-            {project.title.charAt(0)}
-          </div>
-        )}
-        <div className="min-w-0 flex-1">
-          <p className="label">{project.status}</p>
-          <h3 className="mt-1.5 text-xl font-medium leading-tight tracking-tight text-fg">
-            {project.title}
-          </h3>
-        </div>
-      </div>
-
-      <p className="relative mt-5 text-[0.9rem] leading-relaxed text-muted">
-        {project.blurb}
-      </p>
-
-      {shots.length > 0 && (
-        <div className="relative mt-6 flex gap-2.5">
-          {shots.map((src, i) => (
-            <button
-              key={src}
-              type="button"
-              onClick={() => onOpenShots(project, i)}
-              aria-label={`View ${project.title} screenshot ${i + 1}`}
-              className="relative aspect-[9/19] w-full max-w-[4.5rem] cursor-pointer overflow-hidden rounded-lg ring-1 ring-line transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:ring-accent"
-            >
-              <Image
-                src={src}
-                alt=""
-                fill
-                sizes="90px"
-                className="object-cover object-top"
-              />
-            </button>
-          ))}
+    <article className="project-card">
+      {shots.length > 0 ? (
+        <button
+          type="button"
+          onClick={() => onOpenShots(project, indices[0])}
+          className={`project-stage stage-${project.slug} ${landscape ? "landscape-stage" : ""}`}
+          aria-label={`Preview ${project.title} screenshots`}
+        >
+          <span className="stage-grid" aria-hidden />
+          <span className="stage-caption" aria-hidden>
+            {project.category === "games"
+              ? "Made to play"
+              : "Designed for everyday"}
+          </span>
+          <span className="phone-composition" aria-hidden>
+            {indices
+              .filter((index) => index < shots.length)
+              .map((index, i) => (
+                <span className={`phone phone-${i}`} key={shots[index]}>
+                  <Image
+                    src={shots[index]}
+                    alt=""
+                    fill
+                    sizes="140px"
+                    className="object-cover object-top"
+                  />
+                </span>
+              ))}
+          </span>
+          <span className="preview-affordance">
+            <ImagesIcon size={16} aria-hidden /> Explore screens{" "}
+            <ArrowUpRightIcon size={14} aria-hidden />
+          </span>
+        </button>
+      ) : (
+        <div
+          className={`project-stage project-symbol stage-${project.slug}`}
+          aria-hidden
+        >
+          <span className="stage-grid" />
+          {project.icon ? (
+            <Image
+              src={project.icon}
+              alt=""
+              width={112}
+              height={112}
+              className="rounded-3xl"
+            />
+          ) : (
+            <span>
+              {project.category === "academic"
+                ? "{ }"
+                : project.title.charAt(0)}
+            </span>
+          )}
+          <span className="stage-caption">
+            {project.category === "academic"
+              ? "Research & engineering"
+              : "From idea to release"}
+          </span>
         </div>
       )}
-
-      <div className="relative mt-auto pt-6">
-        <ul className="flex flex-wrap gap-2">
-          {project.stack.slice(0, 5).map((s) => (
-            <li
-              key={s}
-              className="rounded-full border border-line-soft px-2.5 py-1 font-mono text-[0.68rem] text-faint"
-            >
-              {s}
-            </li>
+      <div className="project-info">
+        <div className="flex items-center justify-between gap-3">
+          <span className="project-kind">
+            {project.category === "apps"
+              ? "Mobile app"
+              : project.category === "games"
+                ? "Game"
+                : project.category === "web"
+                  ? "Web platform"
+                  : "Academic / ML"}
+          </span>
+          <span
+            className={`project-status ${project.hrefLabel === "Play Store" ? "is-live" : ""}`}
+          >
+            <span />
+            {project.hrefLabel === "Play Store"
+              ? "On Google Play"
+              : project.hrefLabel === "GitHub"
+                ? "Open source"
+                : "In development"}
+          </span>
+        </div>
+        <div className="project-heading">
+          {project.icon && (
+            <Image
+              src={project.icon}
+              alt=""
+              width={34}
+              height={34}
+              className="size-[34px] rounded-xl"
+            />
+          )}
+          <h3 className="project-title">{project.title}</h3>
+        </div>
+        <p className="project-blurb">{project.blurb}</p>
+        <ul className="project-stack">
+          {project.stack.slice(0, 4).map((s) => (
+            <li key={s}>{s}</li>
           ))}
         </ul>
-
-        {project.href ? (
-          <a
-            href={project.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 inline-flex cursor-pointer items-center gap-2 text-sm text-fg transition-colors hover:text-accent"
-          >
-            <LinkIcon size={17} aria-hidden />
-            {project.hrefLabel === "GitHub" ? "View source" : "Get it on Play"}
-            <ArrowUpRightIcon
-              size={14}
-              aria-hidden
-              className="text-faint transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            />
-          </a>
-        ) : (
-          <p className="mt-5 font-mono text-[0.7rem] tracking-wide text-faint">
-            Not public yet
-          </p>
-        )}
+        <div className="project-actions">
+          {project.href ? (
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link"
+            >
+              <LinkIcon size={18} aria-hidden />
+              {project.hrefLabel === "GitHub"
+                ? "View source"
+                : "View on Google Play"}
+              <ArrowUpRightIcon size={16} aria-hidden />
+            </a>
+          ) : (
+            <span className="text-sm text-muted">Release in the works</span>
+          )}
+          {shots.length > 0 && (
+            <button
+              type="button"
+              onClick={() => onOpenShots(project, 0)}
+              className="icon-button"
+              aria-label={`View all ${project.title} screenshots`}
+            >
+              <ImagesIcon size={20} aria-hidden />
+            </button>
+          )}
+        </div>
       </div>
-    </motion.div>
+    </article>
   );
 }

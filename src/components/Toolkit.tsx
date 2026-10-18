@@ -1,40 +1,98 @@
+"use client";
+
+import { useState } from "react";
+import {
+  ArrowUpRightIcon,
+  CodeIcon,
+  DeviceMobileIcon,
+  GlobeIcon,
+  ChartLineUpIcon,
+  CubeIcon,
+  GameControllerIcon,
+} from "@phosphor-icons/react";
 import { skillGroups } from "@/data/skills";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
-/**
- * Layout family: grouped columns with one hairline per group. Not a bulleted
- * list, and not a row-per-item table with a border under every line.
- */
-export function Toolkit() {
-  return (
-    <section
-      id="toolkit"
-      className="border-y border-line-soft bg-surface/40"
-    >
-      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
-        <Reveal>
-          <SectionHeading className="max-w-[16ch]">What I build with</SectionHeading>
-        </Reveal>
+const icons = [
+  CodeIcon,
+  DeviceMobileIcon,
+  GlobeIcon,
+  ChartLineUpIcon,
+  CubeIcon,
+  GameControllerIcon,
+];
+const notes = [
+  "The building blocks. From typed frontends to contracts and game logic.",
+  "My daily toolkit for taking an app from a sketch to Google Play.",
+  "Fast, responsive interfaces with real data and thoughtful interactions.",
+  "Turning raw information into useful predictions and clear insights.",
+  "Verifiable documents and logic that lives on-chain.",
+  "Game worlds, tested systems, and the tools that help me ship.",
+];
 
-        <div className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {skillGroups.map((g, i) => (
-            <Reveal key={g.title} index={i}>
-              <div className="border-t border-line pt-5">
-                <p className="label">{g.title}</p>
-                <ul className="mt-4 flex flex-wrap gap-x-2 gap-y-2">
-                  {g.items.map((item) => (
-                    <li
-                      key={item}
-                      className="rounded-full bg-surface-2 px-3.5 py-1.5 text-sm text-fg/90 ring-1 ring-line-soft ring-inset"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
+export function Toolkit() {
+  const [selected, setSelected] = useState(1);
+  const group = skillGroups[selected];
+  const Icon = icons[selected];
+  return (
+    <section id="toolkit" className="section-shell toolkit-section">
+      <div className="section-intro">
+        <Reveal>
+          <p className="section-eyebrow">
+            <span>04 / The toolkit</span>
+            <span>Right tool. Real purpose.</span>
+          </p>
+          <SectionHeading>Different ideas. Solid foundations.</SectionHeading>
+        </Reveal>
+        <Reveal index={1}>
+          <p className="section-description">
+            A practical mix of technologies, chosen for what the project needs.
+            Explore a discipline to see what’s behind the work.
+          </p>
+        </Reveal>
+      </div>
+      <div className="toolkit-explorer">
+        <div
+          role="group"
+          aria-label="Explore technology disciplines"
+          className="toolkit-menu"
+        >
+          {skillGroups.map((g, i) => {
+            const ItemIcon = icons[i];
+            return (
+              <button
+                key={g.title}
+                type="button"
+                aria-pressed={selected === i}
+                aria-controls="toolkit-detail"
+                onClick={() => setSelected(i)}
+              >
+                <ItemIcon size={22} aria-hidden />
+                <span>{g.title}</span>
+                <span className="tool-count">{g.items.length}</span>
+                <ArrowUpRightIcon size={17} aria-hidden />
+              </button>
+            );
+          })}
+        </div>
+        <div className="toolkit-detail" id="toolkit-detail" key={group.title}>
+          <span className="toolkit-emblem" aria-hidden>
+            <Icon size={46} weight="light" />
+          </span>
+          <p className="section-eyebrow">
+            Inside the toolkit / 0{selected + 1}
+          </p>
+          <h3>{group.title}</h3>
+          <p className="toolkit-note">{notes[selected]}</p>
+          <ul>
+            {group.items.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <a href="#work" className="text-link">
+            See it in the work <ArrowUpRightIcon size={17} aria-hidden />
+          </a>
         </div>
       </div>
     </section>

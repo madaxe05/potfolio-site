@@ -22,7 +22,8 @@ const half = Array.from({ length: REPEATS }, () => shipped).flat();
  */
 export function AppMarquee() {
   return (
-    <div className="border-y border-line-soft py-7">
+    <div className="app-ribbon">
+      <div className="ribbon-caption"><span className="ribbon-live-dot" /><strong>{shipped.length} apps & games</strong><span>Out in the world, on Google Play</span></div>
       <div className="marquee-mask group relative overflow-hidden">
         {/* No flex `gap`: the last item would have no trailing gap, so one
             half of the track is one gap narrower than a whole number of items

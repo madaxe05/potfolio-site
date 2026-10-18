@@ -48,17 +48,17 @@ export function Playground() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="playground" className="border-y border-line-soft bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
+    <section id="playground" className="playground-section">
+      <div className="section-shell">
         <Reveal>
+          <p className="section-eyebrow"><span>03 / The playground</span><span>Go on. Try something.</span></p>
           <SectionHeading className="max-w-[20ch]">
-            Some of it runs right here
+            Less scrolling. More playing.
           </SectionHeading>
         </Reveal>
         <Reveal index={1}>
           <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-muted">
-            Working browser builds, not screenshots. Two of my puzzle games and
-            the colour engine behind HuePilot.
+            Take a puzzle for a spin or find your next favourite colour palette. Small browser experiments, ready to play.
           </p>
         </Reveal>
 
@@ -116,7 +116,7 @@ export function Playground() {
           </Reveal>
 
           <Reveal index={2} className="min-w-0 lg:col-span-8">
-            <div className="rounded-2xl border border-line bg-surface p-6 sm:p-7">
+            <div className="play-console">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active}

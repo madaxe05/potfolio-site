@@ -1,17 +1,29 @@
+import { ArrowUpRightIcon, ArrowUpIcon } from "@phosphor-icons/react/dist/ssr";
 import { site } from "@/data/site";
 
 export function Footer() {
   return (
-    <footer className="mx-auto flex max-w-[1400px] flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-      {/* No year here on purpose: this page is statically prerendered, so a
-          build-time year would silently go stale after the next new year. */}
-      <p className="font-mono text-xs text-faint">{site.name}</p>
-      <a
-        href="#top"
-        className="cursor-pointer font-mono text-xs text-faint transition-colors hover:text-accent"
-      >
-        Back to top
-      </a>
+    <footer className="site-footer">
+      <div className="footer-main">
+        <a href="#top" className="footer-name">
+          Sohan Dhungel<span>.</span>
+        </a>
+        <a href="#top" className="button-secondary">
+          Back to top <ArrowUpIcon size={17} aria-hidden />
+        </a>
+      </div>
+      <div className="footer-bottom">
+        <p>Software, with a human touch.</p>
+        <div>
+          <a href={site.github} target="_blank" rel="noopener noreferrer">
+            GitHub <ArrowUpRightIcon size={13} aria-hidden />
+          </a>
+          <a href={site.cv} target="_blank" rel="noopener noreferrer">
+            View CV <ArrowUpRightIcon size={13} aria-hidden />
+          </a>
+          <span>Built in Kathmandu</span>
+        </div>
+      </div>
     </footer>
   );
 }

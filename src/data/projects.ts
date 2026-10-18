@@ -98,7 +98,7 @@ export const projects: Project[] = [
     stack: ["Flutter", "Firebase"],
     href: play("com.sohan.huepilot"),
     hrefLabel: "Play Store",
-    studio: "S&S Coders 2",
+    studio: "Veritas Studios",
     icon: "/apps/huepilot-icon.png",
     shots: shots("huepilot", 4),
   },
@@ -112,7 +112,7 @@ export const projects: Project[] = [
     stack: ["Flutter", "Android"],
     href: play("com.displayy.displayy"),
     hrefLabel: "Play Store",
-    studio: "S&S Coders 2",
+    studio: "Veritas Studios",
     icon: "/apps/displayy-icon.png",
     shots: shots("displayy", 3),
   },
@@ -143,6 +143,35 @@ export const projects: Project[] = [
     studio: "Veritas Studios",
     icon: "/apps/gta6-cheats-icon.png",
     shots: shots("gta6-cheats", 4),
+  },
+
+  {
+    slug: "emoji-battery",
+    title: "Emoji battery",
+    blurb: "A little personality for your battery. Cute emoji widgets, pets, charging animations and charge alerts.",
+    status: "Live on Google Play",
+    category: "apps",
+    stack: ["Android", "Widgets"],
+    href: play("com.madaxe.sohan.emojibattery"),
+    hrefLabel: "Play Store",
+    studio: "Veritas Studios",
+    icon: "/apps/emoji-battery-icon.png",
+  },
+
+
+  {
+    slug: "ai-calendar",
+    title: "AI Year Progress Wallpaper",
+    blurb:
+      "A live calendar wallpaper that puts the year in perspective. See all 365 days, track your goals, and keep the days remaining in view.",
+    status: "Live on Google Play",
+    category: "apps",
+    stack: ["Android", "Live wallpaper", "Calendar"],
+    href: play("com.veritasstudios.aiyearprogress"),
+    hrefLabel: "Play Store",
+    studio: "Veritas Studios",
+    icon: "/apps/ai-calendar-icon.png",
+    shots: shots("ai-calendar", 4),
   },
 
   // --------------------------------------------------------------- games
@@ -261,13 +290,13 @@ export const shipped = projects.filter((p) => p.hrefLabel === "Play Store");
 export const studios = [
   {
     name: "Veritas Studios",
-    href: "https://play.google.com/store/apps/developer?id=Veritas+Studios&hl=en",
+    href: "https://play.google.com/store/apps/dev?id=5629311408995814555",
     blurb: "Utilities, kids apps and puzzle games.",
     apps: projects.filter((p) => p.studio === "Veritas Studios"),
   },
   {
     name: "Mad Axe",
-    href: "https://play.google.com/store/apps/developer?id=Mad+Axe",
+    href: "https://play.google.com/store/apps/dev?id=5533798906981110653",
     blurb: "Arcade games, word puzzles and companion apps.",
     apps: projects.filter((p) => p.studio === "Mad Axe"),
   },

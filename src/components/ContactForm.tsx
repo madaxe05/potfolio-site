@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowRightIcon, CheckCircleIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import {
+  ArrowRightIcon,
+  CheckCircleIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react";
 import { site } from "@/data/site";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -16,6 +20,7 @@ type Status = "idle" | "sending" | "sent" | "error";
  */
 export function ContactForm() {
   const reduce = useReducedMotion();
+  const sending = useRef(false);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -25,23 +30,28 @@ export function ContactForm() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!endpoint) return;
+    if (!endpoint || sending.current) return;
+    sending.current = true;
 
     const form = e.currentTarget;
     const data = new FormData(form);
     setStatus("sending");
     setError(null);
 
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 20000);
     try {
       const res = await fetch(endpoint, {
+        signal: controller.signal,
         method: "POST",
         body: data,
         headers: { Accept: "application/json" },
       });
       if (!res.ok) {
-        const body = await res.json().catch(() => null);
         throw new Error(
-          body?.errors?.[0]?.message ?? `The form service returned ${res.status}.`
+          res.status === 429
+            ? "Too many attempts. Please wait a little, or email me directly."
+            : "Your message couldn’t be sent. Please try again, or email me directly.",
         );
       }
       form.reset();
@@ -49,26 +59,58 @@ export function ContactForm() {
     } catch (err) {
       setStatus("error");
       setError(
-        err instanceof Error ? err.message : "Something went wrong sending that."
+        err instanceof Error && err.name === "AbortError"
+          ? "Sending took too long. Your message is still here — try again, or email me directly."
+          : err instanceof TypeError
+            ? "Please check your connection and try again. Your message is still here."
+            : err instanceof Error
+              ? err.message
+              : "Your message couldn’t be sent. Please try again.",
       );
+    } finally {
+      window.clearTimeout(timeout);
+      sending.current = false;
     }
   }
 
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-2xl border border-line bg-surface p-7 sm:p-9"
+      className="contact-form"
+      aria-busy={status === "sending"}
     >
-      <p className="label">Send a message</p>
+      <p className="section-eyebrow">Let’s build something</p>
+      <h3 className="text-2xl font-medium tracking-tight">
+        Tell me what you have in mind.
+      </h3>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <Field label="Your name" name="name" autoComplete="name" />
-        <Field label="Email" name="email" type="email" autoComplete="email" />
-      </div>
+      <fieldset disabled={status === "sending"} className="contact-fields">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field label="Your name" name="name" autoComplete="name" />
+          <Field label="Email" name="email" type="email" autoComplete="email" />
+        </div>
 
-      <div className="mt-5">
-        <Field label="What do you need?" name="message" textarea />
-      </div>
+        <fieldset className="project-type-picker">
+          <legend>I’m interested in</legend>
+          {["Website", "Mobile app", "Collaboration", "Something else"].map(
+            (type, i) => (
+              <label key={type}>
+                <input
+                  type="radio"
+                  name="project_type"
+                  value={type}
+                  defaultChecked={i === 0}
+                />
+                <span>{type}</span>
+              </label>
+            ),
+          )}
+        </fieldset>
+
+        <div className="mt-5">
+          <Field label="What do you need?" name="message" textarea />
+        </div>
+      </fieldset>
 
       {/* Honeypot. Bots fill it, people never see it. */}
       <input
@@ -86,7 +128,7 @@ export function ContactForm() {
           disabled={status === "sending" || !endpoint}
           className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-ink transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
         >
-          {status === "sending" ? "Sending" : "Send it"}
+          {status === "sending" ? "Sending…" : "Send message"}
           <ArrowRightIcon
             size={16}
             aria-hidden
@@ -96,9 +138,7 @@ export function ContactForm() {
 
         {!endpoint && (
           <p className="max-w-[38ch] text-[0.85rem] leading-relaxed text-faint">
-            Waiting on an endpoint. Add a Formspree form id to{" "}
-            <code className="font-mono text-muted">site.formspreeId</code> and
-            this goes live.
+            Please use the email address alongside this form to get in touch.
           </p>
         )}
 
@@ -109,7 +149,10 @@ export function ContactForm() {
               initial={reduce ? false : { opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: reduce ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: reduce ? 0 : 0.25,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="flex items-center gap-2 text-sm text-accent"
             >
               <CheckCircleIcon size={17} weight="fill" aria-hidden />
@@ -122,7 +165,10 @@ export function ContactForm() {
               initial={reduce ? false : { opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: reduce ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: reduce ? 0 : 0.25,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="flex items-start gap-2 text-sm text-fg"
             >
               <WarningCircleIcon
@@ -136,6 +182,12 @@ export function ContactForm() {
           )}
         </AnimatePresence>
       </div>
+
+      {status === "error" && (
+        <a href={`mailto:${site.email}`} className="text-link mt-4 text-accent">
+          Email me directly <ArrowRightIcon size={15} aria-hidden />
+        </a>
+      )}
 
       <p aria-live="polite" className="sr-only">
         {status === "sending" ? "Sending your message" : ""}
@@ -172,7 +224,8 @@ function Field({
           id={name}
           name={name}
           required
-          rows={5}
+          rows={4}
+          placeholder="A little about your idea, your goals, and your timeline…"
           className={`${shared} resize-y`}
         />
       ) : (
@@ -182,6 +235,7 @@ function Field({
           type={type}
           required
           autoComplete={autoComplete}
+          placeholder={name === "name" ? "Your name" : "you@example.com"}
           className={shared}
         />
       )}

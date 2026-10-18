@@ -7,7 +7,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 const description =
-  "Software Engineer at Octacore Solutions, Kathmandu. Android apps and games live on Google Play, plus Godot games, Ethereum contracts and machine learning work.";
+  "Software developer based in Kathmandu. Android apps and games live on Google Play, plus Godot games, Ethereum contracts and machine learning work.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     "Software Developer",
     "Flutter developer",
     "Software Engineer Nepal",
-    "Octacore Solutions",
     "Kathmandu",
     "Nepal",
     "Godot",

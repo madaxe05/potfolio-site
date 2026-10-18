@@ -14,14 +14,6 @@ export const site = {
 
   experience: [
     {
-      role: "Software Developer",
-      org: "Octacore Solutions",
-      href: "https://octacore.com.np",
-      period: "1 week",
-      current: true,
-      note: "Moved into the developer role after the internship. Building and shipping production software with the team.",
-    },
-    {
       role: "Software Engineering Intern",
       org: "Octacore Solutions",
       href: "https://octacore.com.np",
@@ -39,9 +31,8 @@ export const site = {
     { year: "2025", title: "Major project: blockchain document verification", note: "Ethereum smart contracts built to catch forged documents.", current: false },
     { year: "2025", title: "First hackathon", note: "Joined the same year as the major project.", current: false },
     { year: "2026", title: "Finished BE Computer Engineering", note: "", current: false },
-    { year: "2026", title: "Software Engineering Intern", note: "Joined Octacore Solutions for a two-month internship.", current: false },
-    { year: "2026", title: "Software Developer", note: "Moved into the developer role at Octacore Solutions.", current: true },
-    { year: "2026", title: "Learning Godot", note: "Picking up game development alongside the day job.", current: true },
+    { year: "2026", title: "Software Engineering Intern", note: "Completed a two-month software engineering internship at Octacore Solutions.", current: false },
+    { year: "2026", title: "Learning Godot", note: "Learning game development and building independent projects.", current: true },
   ],
 
   education: [

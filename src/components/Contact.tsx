@@ -1,9 +1,16 @@
+"use client";
+
+import { useState } from "react";
 import {
   ArrowUpRightIcon,
   GithubLogoIcon,
   InstagramLogoIcon,
   LinkedinLogoIcon,
-} from "@phosphor-icons/react/dist/ssr";
+  CopyIcon,
+  CheckIcon,
+  EnvelopeSimpleIcon,
+  PhoneIcon,
+} from "@phosphor-icons/react";
 import { site } from "@/data/site";
 import { ContactForm } from "./ContactForm";
 import { SectionHeading } from "./SectionHeading";
@@ -15,74 +22,77 @@ const socials = [
   { label: "Instagram", href: site.instagram, Icon: InstagramLogoIcon },
 ];
 
-/** Layout family: split. Details on the left, the form on the right. */
 export function Contact() {
+  const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(site.email);
+      setCopied(true);
+      setCopyError(false);
+    } catch {
+      setCopied(false);
+      setCopyError(true);
+    }
+  }
   return (
-    <section id="contact" className="border-t border-line-soft bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-5">
-            <Reveal>
-              <SectionHeading className="max-w-[14ch]">Get in touch</SectionHeading>
-            </Reveal>
-
-            <Reveal index={1}>
-              <p className="mt-7 max-w-[42ch] text-lg leading-relaxed text-muted">
-                Fill in the form and it lands in my inbox. Tell me what you are
-                building and roughly when you need it.
-              </p>
-            </Reveal>
-
-            <Reveal index={2}>
-              <dl className="mt-12 space-y-8 border-t border-line pt-8">
-                <div>
-                  <dt className="label">Email</dt>
-                  {/* Plain text on purpose, not a mailto link. */}
-                  <dd className="mt-3 select-all font-mono text-base text-fg">
-                    {site.email}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="label">Phone</dt>
-                  <dd className="mt-3 select-all font-mono text-base text-fg">
-                    {site.phone}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="label">Based in</dt>
-                  <dd className="mt-3 text-base text-fg">{site.location}</dd>
-                </div>
-                <div>
-                  <dt className="label">Elsewhere</dt>
-                  <dd className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
-                    {socials.map((s) => (
-                      <a
-                        key={s.label}
-                        href={s.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex cursor-pointer items-center gap-1.5 text-base text-fg transition-colors hover:text-accent"
-                      >
-                        <s.Icon size={16} aria-hidden className="text-faint transition-colors duration-200 group-hover:text-accent" />
-                        {s.label}
-                        <ArrowUpRightIcon
-                          size={14}
-                          aria-hidden
-                          className="text-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
-                        />
-                      </a>
-                    ))}
-                  </dd>
-                </div>
-              </dl>
-            </Reveal>
-          </div>
-
-          <div className="lg:col-span-7">
-            <Reveal index={1}>
-              <ContactForm />
-            </Reveal>
-          </div>
+    <section id="contact" className="contact-section">
+      <div className="section-shell">
+        <div className="contact-layout">
+          <Reveal>
+            <p className="section-eyebrow">06 / Say hello</p>
+            <SectionHeading>Good things start with a hello.</SectionHeading>
+            <p className="section-description">
+              Have a project in mind, a role to talk about, or an interesting
+              idea? I’d love to hear it.
+            </p>
+            <div className="contact-email">
+              <EnvelopeSimpleIcon size={24} aria-hidden />
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <button
+                type="button"
+                className="icon-button"
+                aria-label={copied ? "Email copied" : "Copy email address"}
+                onClick={copyEmail}
+              >
+                {copied ? <CheckIcon size={18} /> : <CopyIcon size={18} />}
+              </button>
+            </div>
+            <span aria-live="polite" className="copy-status">
+              {copied
+                ? "Email copied to clipboard."
+                : copyError
+                  ? "Please select and copy the email address."
+                  : "Prefer email? Write to me directly."}
+            </span>
+            <a
+              href={`tel:${site.phone.replace(/\s/g, "")}`}
+              className="contact-phone"
+            >
+              <PhoneIcon size={17} aria-hidden />
+              {site.phone}
+            </a>
+            <div className="contact-socials">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <s.Icon size={20} aria-hidden />
+                  <span>{s.label}</span>
+                  <ArrowUpRightIcon size={14} aria-hidden />
+                </a>
+              ))}
+            </div>
+            <p className="contact-location">
+              Kathmandu, Nepal <span>UTC +5:45</span>
+            </p>
+          </Reveal>
+          <Reveal index={1}>
+            <ContactForm />
+          </Reveal>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { BackToTop } from "@/components/BackToTop";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { AppMarquee } from "@/components/AppMarquee";
@@ -32,13 +33,14 @@ export default function Home() {
         {/* 2026-08-30: ShotRail (the pinned "every screen" rail) pulled at
             Sohan's request. Component kept at src/components/ShotRail.tsx, so
             re-adding it is one import and one line. */}
+        <Services />
         <Playground />
         <Studios />
-        <Services />
         <Toolkit />
-        <ExperienceTree />
         <About />
+        <ExperienceTree />
         <Contact />
+        <BackToTop />
       </main>
       <Footer />
     </>

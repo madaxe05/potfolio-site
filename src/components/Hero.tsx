@@ -113,7 +113,7 @@ export function Hero() {
             {...rise(0)}
             className="reveal mt-8 max-w-[46ch] text-lg leading-relaxed text-muted sm:text-xl"
           >
-            Software Engineer at Octacore Solutions, in Kathmandu. {shipped.length}{" "}
+            Software developer based in Kathmandu. {shipped.length}{" "}
             Android apps and games live on Google Play, plus web and on-chain work.
           </motion.p>
 

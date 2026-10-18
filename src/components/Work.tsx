@@ -1,175 +1,203 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { CaretDownIcon } from "@phosphor-icons/react";
-import { categories, projects, type Category, type Project } from "@/data/projects";
+import {
+  ArrowDownIcon,
+  MagnifyingGlassIcon,
+  XIcon,
+} from "@phosphor-icons/react";
+import {
+  categories,
+  projects,
+  type Category,
+  type Project,
+} from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 import { Lightbox, type LightboxState } from "./Lightbox";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 
-type Filter = Category | "all";
-
-/**
- * Filterable work grid.
- * Motivation: state transition. Picking a category is a real choice, so the
- * grid reflows with a layout animation and the active pill slides between
- * tabs (shared layoutId) instead of cutting.
- */
+const featuredSlugs = ["veritas-guard", "huepilot", "jetpack-max"];
+const ordered = [...projects].sort((a, b) => {
+  const rank = (p: Project) =>
+    featuredSlugs.includes(p.slug)
+      ? featuredSlugs.indexOf(p.slug)
+      : featuredSlugs.length;
+  return rank(a) - rank(b);
+});
 const PREVIEW = 3;
 
 export function Work() {
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Category | "all">("all");
+  const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [box, setBox] = useState<LightboxState>(null);
+  const heading = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-
-  const counts = useMemo(() => {
-    const c: Record<string, number> = { all: projects.length };
-    for (const p of projects) c[p.category] = (c[p.category] ?? 0) + 1;
-    return c;
-  }, []);
-
-  const matching = useMemo(
-    () => (filter === "all" ? projects : projects.filter((p) => p.category === filter)),
-    [filter]
+  const counts = useMemo(
+    () =>
+      Object.fromEntries(
+        categories.map((c) => [
+          c.id,
+          c.id === "all"
+            ? projects.length
+            : projects.filter((p) => p.category === c.id).length,
+        ]),
+      ),
+    [],
   );
-
-  // Three by default, the rest behind one button. A wall of fifteen cards is a
-  // worse first impression than three good ones.
-  const shown = expanded ? matching : matching.slice(0, PREVIEW);
-  const hidden = matching.length - shown.length;
-
+  const matching = useMemo(
+    () =>
+      ordered.filter(
+        (p) =>
+          (filter === "all" || p.category === filter) &&
+          `${p.title} ${p.blurb} ${p.stack.join(" ")}`
+            .toLowerCase()
+            .includes(query.trim().toLowerCase()),
+      ),
+    [filter, query],
+  );
+  const shown =
+    expanded || query.trim() ? matching : matching.slice(0, PREVIEW);
   const openShots = useCallback((p: Project, index: number) => {
-    if (!p.shots?.length) return;
-    setBox({ title: p.title, shots: p.shots, index });
+    if (p.shots?.length) setBox({ title: p.title, shots: p.shots, index });
   }, []);
-
+  const closeBox = useCallback(() => setBox(null), []);
   const move = useCallback(
     (delta: number) =>
       setBox((s) =>
-        s ? { ...s, index: (s.index + delta + s.shots.length) % s.shots.length } : s
+        s
+          ? { ...s, index: (s.index + delta + s.shots.length) % s.shots.length }
+          : s,
       ),
-    []
+    [],
   );
-
-  const closeBox = useCallback(() => setBox(null), []);
-
   return (
-    <section id="work" className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 md:py-24">
-      <Reveal>
-        <SectionHeading>Selected work</SectionHeading>
-      </Reveal>
-
-      <Reveal index={1}>
-        {/* Filter buttons, not the APG tab pattern. Real tabs would need a
-            tabpanel, aria-controls, roving tabindex and arrow-key navigation,
-            and a half-applied tab role announces a panel that does not exist. */}
+    <section id="work" className="section-shell">
+      <div ref={heading} className="section-intro">
+        <Reveal>
+          <p className="section-eyebrow">
+            <span>01 / Selected work</span>
+            <span>Built. Shipped. Improving.</span>
+          </p>
+          <SectionHeading>Ideas made tangible.</SectionHeading>
+        </Reveal>
+        <Reveal index={1}>
+          <p className="section-description">
+            Everyday tools, one-more-go games, and a few experiments along the
+            way. A selection of things I’ve taken from the first line of code to
+            the real world.
+          </p>
+        </Reveal>
+      </div>
+      <div className="work-toolbar">
         <div
           role="group"
           aria-label="Filter projects by category"
-          className="mt-10 flex flex-wrap gap-2"
+          className="project-filters"
         >
-          {categories.map((c) => {
-            const active = filter === c.id;
-            return (
-              <button
-                key={c.id}
-                type="button"
-                aria-pressed={active}
-                onClick={() => {
-                  setFilter(c.id);
-                  setExpanded(false);
-                }}
-                className={`relative cursor-pointer rounded-full px-4 py-2 text-sm transition-colors duration-200 ${
-                  active ? "text-accent-ink" : "text-muted hover:text-fg"
-                }`}
-              >
-                {active && (
-                  <motion.span
-                    layoutId="filter-pill"
-                    aria-hidden
-                    transition={
-                      reduce
-                        ? { duration: 0 }
-                        : { type: "spring", stiffness: 420, damping: 34 }
-                    }
-                    className="absolute inset-0 rounded-full bg-accent"
-                  />
-                )}
-                <span className="relative z-10">
-                  {c.label}
-                  <span
-                    className={`ml-2 font-mono text-[0.7rem] ${
-                      active ? "text-accent-ink/70" : "text-faint"
-                    }`}
-                  >
-                    {counts[c.id] ?? 0}
-                  </span>
-                </span>
-              </button>
-            );
-          })}
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              aria-pressed={filter === c.id}
+              onClick={() => {
+                setFilter(c.id);
+                setExpanded(false);
+              }}
+              className={filter === c.id ? "active" : ""}
+            >
+              {c.id === "all" ? "All projects" : c.label}
+              <span>{counts[c.id]}</span>
+            </button>
+          ))}
         </div>
-      </Reveal>
-
-      {/* A short status line, not aria-live on the grid itself, which would
-          re-read every card's full text on each filter change. */}
+        <label className="project-search">
+          <MagnifyingGlassIcon size={18} aria-hidden />
+          <span className="sr-only">Search projects</span>
+          <input
+            type="search"
+            placeholder="Find a project…"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setExpanded(false);
+            }}
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="Clear project search"
+            >
+              <XIcon size={16} />
+            </button>
+          )}
+        </label>
+      </div>
       <p aria-live="polite" className="sr-only">
-        {`${shown.length} of ${matching.length} projects shown`}
+        {shown.length} of {matching.length} projects shown
       </p>
-
-      <motion.div
-        layout={!reduce}
-        className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      >
+      <motion.div layout={!reduce} className="project-grid">
         <AnimatePresence mode="popLayout">
           {shown.map((p) => (
             <motion.div
               key={p.slug}
               layout={!reduce}
-              // `initial` must not branch on useReducedMotion: the hook is
-              // undefined on the server and a real boolean on the client's
-              // hydration render, and Motion writes `initial` into the SSR
-              // style attribute. Branch the transition instead.
-              className="reveal"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={
-                reduce ? { duration: 0 } : { duration: 0.32, ease: [0.16, 1, 0.3, 1] }
-              }
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 0.25 }}
             >
               <ProjectCard project={p} onOpenShots={openShots} />
             </motion.div>
           ))}
         </AnimatePresence>
       </motion.div>
-
       {matching.length === 0 && (
-        <p className="mt-12 text-muted">Nothing in this category yet.</p>
-      )}
-
-      {(hidden > 0 || expanded) && matching.length > PREVIEW && (
-        <div className="mt-12 flex justify-center">
+        <div className="empty-projects">
+          <MagnifyingGlassIcon size={32} aria-hidden />
+          <h3>No projects found</h3>
+          <p>Try a name or a technology like Flutter.</p>
           <button
             type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="group inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-6 py-3.5 text-sm text-fg transition-all duration-200 hover:border-accent hover:text-accent active:scale-[0.98]"
+            className="text-link"
+            onClick={() => {
+              setQuery("");
+              setFilter("all");
+            }}
           >
-            {expanded ? "Show fewer" : `View all ${matching.length}`}
-            <CaretDownIcon
-              size={15}
+            Clear filters <XIcon size={16} />
+          </button>
+        </div>
+      )}
+      {!query.trim() && matching.length > PREVIEW && (
+        <div className="work-more">
+          <span>
+            Showing {shown.length} of {matching.length} projects
+          </span>
+          <button
+            type="button"
+            className="button-secondary"
+            onClick={() => {
+              if (expanded)
+                heading.current?.scrollIntoView({
+                  behavior: reduce ? "instant" : "smooth",
+                  block: "start",
+                });
+              setExpanded((v) => !v);
+            }}
+          >
+            {expanded ? "Show selected work" : "Explore all projects"}
+            <ArrowDownIcon
+              size={17}
+              className={expanded ? "rotate-180" : ""}
               aria-hidden
-              className={`transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                expanded ? "rotate-180" : ""
-              }`}
             />
           </button>
         </div>
       )}
-
       <Lightbox state={box} onClose={closeBox} onMove={move} />
     </section>
   );
