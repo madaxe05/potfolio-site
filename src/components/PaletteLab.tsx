@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowCounterClockwiseIcon, CheckIcon, CopyIcon } from "@phosphor-icons/react";
+import { useTheme } from "./ThemeToggle";
 
 /** Site accent, as authored in globals.css. Reset restores exactly this. */
 const DEFAULT_HUE = 12;
@@ -35,25 +36,45 @@ function hslToHex(h: number, s: number, l: number) {
 
 const INK = "#0a0a0b";
 const PAPER = "#f4f4f3";
+/** Light theme page ground, from globals.css. */
+const LIGHT_PAGE = "#fdfdfc";
 const MIN_RATIO = 4.5;
 
 /**
- * Lifts lightness until the colour clears WCAG AA against the page ground.
+ * Moves lightness until the colour clears WCAG AA against the page ground.
  *
  * A fixed lightness is NOT a contrast clamp. At l=58 the blues land far darker
- * than the oranges: hue 240 gives #4141e6 at 2.94:1, which would drag the
- * site-wide focus ring and every accent button below AA the moment it was
- * applied. This raises l in one-point steps until the ratio actually passes.
+ * than the oranges: hue 240 gives #4141e6 at 2.94:1 on the dark page, which
+ * would drag the site-wide focus ring and every accent button below AA the
+ * moment it was applied. Dark mode raises l, light mode lowers it, one step at
+ * a time, until the ratio actually passes against that theme's ground.
  */
-function accessibleHex(hue: number, sat: number, lightness: number) {
+function accessibleHex(hue: number, sat: number, lightness: number, ground = INK) {
+  const up = ground === INK;
   let l = lightness;
   let hex = hslToHex(hue, sat, l);
-  while (l < 92 && contrast(hex, INK) < MIN_RATIO) {
-    l += 1;
+  while (l > 8 && l < 92 && contrast(hex, ground) < MIN_RATIO) {
+    l += up ? 1 : -1;
     hex = hslToHex(hue, sat, l);
   }
   return hex;
 }
+
+/** The three accent tokens for one theme, derived from a hue. */
+function themeTokens(hue: number, light: boolean) {
+  const ground = light ? LIGHT_PAGE : INK;
+  const accent = accessibleHex(hue, 77, light ? 44 : 58, ground);
+  return {
+    accent,
+    wash: light ? hslToHex(hue, 70, 94) : hslToHex(hue, 60, 9),
+    ink: contrast(INK, accent) >= contrast(PAPER, accent) ? INK : PAPER,
+  };
+}
+
+const STYLE_ID = "palette-lab-tokens";
+
+/** Ink or paper, whichever reads better on a given swatch. */
+const readableOn = (hex: string) => (contrast(INK, hex) >= contrast(PAPER, hex) ? INK : PAPER);
 
 /**
  * Five-step harmony. The Accent step is guaranteed to clear AA against the page
@@ -89,8 +110,12 @@ export function PaletteLab() {
   const [applied, setApplied] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
 
+  const light = useTheme() === "light";
   const swatches = useMemo(() => palette(hue), [hue]);
-  const accent = swatches[2].hex;
+  // The readout describes what the page would actually adopt in this theme.
+  const tokens = useMemo(() => themeTokens(hue, light), [hue, light]);
+  const accent = tokens.accent;
+  const ground = light ? LIGHT_PAGE : INK;
 
   useEffect(() => {
     if (!copied) return;
@@ -102,27 +127,33 @@ export function PaletteLab() {
    * Three tokens move together. --color-accent-wash and --color-accent-ink are
    * both used *with* the accent (`bg-accent-wash text-accent`, `bg-accent
    * text-accent-ink`), so overriding only the accent leaves blue text on a
-   * dark-orange tile. Ink flips to paper if that reads better on the new hue.
+   * dark-orange tile.
+   *
+   * Written as a <style> with one block per theme, not as inline styles on
+   * <html>. Inline styles beat both theme selectors, so a dark-mode wash would
+   * stay on after switching to light and every accent chip would turn into
+   * near-black. With both blocks present the theme toggle keeps working.
    */
-  const applyTokens = (hex: string, h: number) => {
-    const root = document.documentElement.style;
-    root.setProperty("--color-accent", hex);
-    root.setProperty("--color-accent-wash", hslToHex(h, 60, 9));
-    root.setProperty(
-      "--color-accent-ink",
-      contrast(INK, hex) >= contrast(PAPER, hex) ? INK : PAPER
-    );
+  const applyTokens = (h: number) => {
+    const d = themeTokens(h, false);
+    const l = themeTokens(h, true);
+    let el = document.getElementById(STYLE_ID);
+    if (!el) {
+      el = document.createElement("style");
+      el.id = STYLE_ID;
+      document.head.appendChild(el);
+    }
+    el.textContent =
+      `:root{--color-accent:${d.accent};--color-accent-wash:${d.wash};--color-accent-ink:${d.ink}}` +
+      `:root[data-theme="light"]{--color-accent:${l.accent};--color-accent-wash:${l.wash};--color-accent-ink:${l.ink}}`;
   };
 
   const clearTokens = () => {
-    const root = document.documentElement.style;
-    root.removeProperty("--color-accent");
-    root.removeProperty("--color-accent-wash");
-    root.removeProperty("--color-accent-ink");
+    document.getElementById(STYLE_ID)?.remove();
   };
 
   const apply = () => {
-    applyTokens(accent, hue);
+    applyTokens(hue);
     setApplied(true);
   };
 
@@ -181,7 +212,7 @@ export function PaletteLab() {
             setHue(next);
             // If the page is already recoloured, follow the slider. Otherwise
             // the swatches and readout describe a hue the page is not using.
-            if (applied) applyTokens(palette(next)[2].hex, next);
+            if (applied) applyTokens(next);
           }}
           className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full outline-none [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-fg [&::-webkit-slider-thumb]:ring-2 [&::-webkit-slider-thumb]:ring-ink [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-fg"
           style={{
@@ -206,10 +237,10 @@ export function PaletteLab() {
               >
                 {copied === s.hex ? (
                   <motion.span
+                    style={{ color: readableOn(s.hex) }}
                     initial={reduce ? false : { scale: 0.7, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: reduce ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-ink"
                   >
                     <CheckIcon size={18} weight="bold" aria-hidden />
                   </motion.span>
@@ -217,7 +248,8 @@ export function PaletteLab() {
                   <CopyIcon
                     size={16}
                     aria-hidden
-                    className="text-ink/0 transition-colors duration-200 group-hover:text-ink/70"
+                    style={{ color: readableOn(s.hex) }}
+                    className="opacity-0 transition-opacity duration-200 group-hover:opacity-70"
                   />
                 )}
               </span>
@@ -237,7 +269,7 @@ export function PaletteLab() {
         <div className="flex flex-wrap items-center gap-3">
           <span
             className="rounded-full px-4 py-2 text-sm font-medium"
-            style={{ backgroundColor: accent, color: "#0a0a0b" }}
+            style={{ backgroundColor: accent, color: tokens.ink }}
           >
             Button
           </span>
@@ -246,11 +278,10 @@ export function PaletteLab() {
           </span>
         </div>
         <dl className="mt-5 grid grid-cols-2 gap-4">
-          {/* Two genuinely different pairs. Comparing the accent to the page
-              ink twice would print the same number under two labels, since
-              contrast is symmetric. */}
-          <ContrastRow label="Accent on page" ratio={contrast(accent, "#0a0a0b")} />
-          <ContrastRow label="White on accent" ratio={contrast("#f4f4f3", accent)} />
+          {/* Two genuinely different pairs, both measured against the current
+              theme's page ground and button ink. */}
+          <ContrastRow label="Accent on page" ratio={contrast(accent, ground)} />
+          <ContrastRow label="Text on accent" ratio={contrast(tokens.ink, accent)} />
         </dl>
       </div>
 
@@ -258,7 +289,7 @@ export function PaletteLab() {
         <button
           type="button"
           onClick={apply}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-110 active:scale-[0.98]"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-(--accent-hover) active:scale-[0.98]"
         >
           {applied ? "Applied to the page" : "Recolour this page"}
         </button>

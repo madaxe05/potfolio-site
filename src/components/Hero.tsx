@@ -124,7 +124,7 @@ export function Hero() {
             <Magnetic>
               <a
                 href="#work"
-                className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-ink transition-[filter] duration-200 hover:brightness-110 active:scale-[0.98]"
+                className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-ink transition-[filter] duration-200 hover:brightness-(--accent-hover) active:scale-[0.98]"
               >
                 View work
                 <ArrowRightIcon

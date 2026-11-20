@@ -7,7 +7,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 const description =
-  "Software developer based in Kathmandu. Android apps and games live on Google Play, plus Godot games, Ethereum contracts and machine learning work.";
+  "Software developer based in Kathmandu. Android apps and games live on Google Play, plus Godot and Unity games, Ethereum contracts and machine learning work.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -30,6 +30,7 @@ export const metadata: Metadata = {
     "Kathmandu",
     "Nepal",
     "Godot",
+    "Unity",
     "Solidity",
     "Firebase",
   ],
@@ -50,6 +51,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // The inline theme script stamps data-theme before React hydrates, so
+      // the attribute legitimately differs from the server HTML in light mode.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>

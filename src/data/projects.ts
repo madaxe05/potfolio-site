@@ -15,6 +15,8 @@ export type Project = {
   icon?: string;
   /** Real store screenshots. These feed the lightbox. */
   shots?: string[];
+  /** Landscape screenshots (most games). Cards lay them out wide. */
+  landscape?: boolean;
 };
 
 export const categories: { id: Category | "all"; label: string }[] = [
@@ -114,22 +116,25 @@ export const projects: Project[] = [
     hrefLabel: "Play Store",
     studio: "Veritas Studios",
     icon: "/apps/displayy-icon.png",
-    shots: shots("displayy", 3),
+    shots: shots("displayy", 4),
   },
-  {
-    slug: "gta-cheats",
-    title: "GTA Cheats: All Codes",
-    blurb:
-      "Every Grand Theft Auto cheat code from GTA 3 to GTA 6, across console, PC and mobile, with search that actually finds what you typed.",
-    status: "Live on Google Play",
-    category: "apps",
-    stack: ["Flutter", "Android", "AdMob"],
-    href: play("com.sohan.gtacheats"),
-    hrefLabel: "Play Store",
-    studio: "Mad Axe",
-    icon: "/apps/gta-cheats-icon.png",
-    shots: shots("gta-cheats", 4),
-  },
+  // 2026-11-20: GTA Cheats: All Codes (com.sohan.gtacheats) returns 404 on
+  // Google Play, so it is hidden. Images stay in /public/apps; uncomment to restore.
+  // {
+  //   slug: "gta-cheats",
+  //   title: "GTA Cheats: All Codes",
+  //   blurb:
+  //     "Every Grand Theft Auto cheat code from GTA 3 to GTA 6, across console, PC and mobile, with search that actually finds what you typed.",
+  //   status: "Live on Google Play",
+  //   category: "apps",
+  //   stack: ["Flutter", "Android", "AdMob"],
+  //   href: play("com.sohan.gtacheats"),
+  //   hrefLabel: "Play Store",
+  //   studio: "Mad Axe Studios",
+  //   icon: "/apps/gta-cheats-icon.png",
+  //   shots: shots("gta-cheats", 4),
+  // },
+
   {
     slug: "gta6-cheats",
     title: "GTA 6 Cheat Codes",
@@ -156,6 +161,7 @@ export const projects: Project[] = [
     hrefLabel: "Play Store",
     studio: "Veritas Studios",
     icon: "/apps/emoji-battery-icon.png",
+    shots: shots("emoji-battery", 4),
   },
 
 
@@ -185,9 +191,10 @@ export const projects: Project[] = [
     stack: ["Godot 4", "GDScript", "Android"],
     href: play("com.madaxe.jetpack"),
     hrefLabel: "Play Store",
-    studio: "Mad Axe",
+    studio: "Mad Axe Studios",
     icon: "/apps/jetpack-max-icon.png",
     shots: shots("jetpack-max", 4),
+    landscape: true,
   },
   {
     slug: "daily-word",
@@ -199,7 +206,7 @@ export const projects: Project[] = [
     stack: ["Flutter", "Android"],
     href: play("com.madaxe.sohan.dailyword"),
     hrefLabel: "Play Store",
-    studio: "Mad Axe",
+    studio: "Mad Axe Studios",
     icon: "/apps/daily-word-icon.png",
     shots: shots("daily-word", 4),
   },
@@ -215,16 +222,52 @@ export const projects: Project[] = [
     hrefLabel: "Play Store",
     studio: "Veritas Studios",
     icon: "/apps/merge-1024-icon.png",
-    shots: shots("merge-1024", 4),
+    shots: shots("merge-1024", 3),
+  },
+  {
+    slug: "brainrot-night-shift",
+    title: "Brainrot Backrooms Night Shift",
+    blurb:
+      "First-person survival horror. The power is out, the exit is locked and brainrot monsters roam a liminal maze that changes every run.",
+    status: "Live on Google Play",
+    category: "games",
+    stack: ["Godot 4", "GDScript", "Android"],
+    href: play("com.madaxe.sohan.brainrot"),
+    hrefLabel: "Play Store",
+    studio: "Mad Axe Studios",
+    icon: "/apps/brainrot-night-shift-icon.png",
+    shots: shots("brainrot-night-shift", 4),
+    landscape: true,
+  },
+  {
+    slug: "scam-with-friends",
+    title: "Scam with Friends",
+    blurb:
+      "Comedy call-centre simulator. Pitch ridiculous fictional products, read each caller's mood, hit your quota and survive a chaotic low-poly office shift.",
+    status: "Live on Google Play",
+    category: "games",
+    stack: ["Unity", "C#", "Android"],
+    href: play("com.madaxe.scamcallsimulator"),
+    hrefLabel: "Play Store",
+    studio: "Mad Axe Studios",
+    icon: "/apps/scam-with-friends-icon.png",
+    shots: shots("scam-with-friends", 4),
+    landscape: true,
   },
   {
     slug: "realm-guard",
     title: "Realm Guard",
     blurb:
       "Tower defence for Android. 35 hand-tuned levels, with a balance simulator that plays every wave headlessly before a build is allowed to ship.",
-    status: "Coming soon on Play Store and App Store",
+    status: "Live on Google Play",
     category: "games",
     stack: ["Godot 4", "GDScript", "gdUnit4"],
+    href: play("com.sohandhungel.realmguard"),
+    hrefLabel: "Play Store",
+    studio: "Mad Axe Studios",
+    icon: "/apps/realm-guard-icon.png",
+    shots: shots("realm-guard", 4),
+    landscape: true,
   },
   {
     slug: "arrow-escape",
@@ -295,9 +338,11 @@ export const studios = [
     apps: projects.filter((p) => p.studio === "Veritas Studios"),
   },
   {
-    name: "Mad Axe",
-    href: "https://play.google.com/store/apps/dev?id=5533798906981110653",
-    blurb: "Arcade games, word puzzles and companion apps.",
-    apps: projects.filter((p) => p.studio === "Mad Axe"),
+    name: "Mad Axe Studios",
+    // 2026-11-20: moved to the new Mad Axe Studios developer account.
+    // Old link: https://play.google.com/store/apps/dev?id=5533798906981110653
+    href: "https://play.google.com/store/apps/dev?id=6116371801298254722",
+    blurb: "Arcade, horror, strategy and simulation games.",
+    apps: projects.filter((p) => p.studio === "Mad Axe Studios"),
   },
 ];

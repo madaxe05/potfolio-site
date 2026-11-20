@@ -1,6 +1,72 @@
-# Sohan Dhungel, portfolio
+<div align="center">
 
-Single-page portfolio. Next.js 16 App Router, TypeScript, Tailwind CSS 4, Motion.
+# Sohan Dhungel
+
+**Software developer from Kathmandu. Ships Android apps and games, then makes the portfolio playable.**
+
+[sohandhungel.com.np](https://sohandhungel.com.np) ·
+[Veritas Studios](https://play.google.com/store/apps/dev?id=5629311408995814555) ·
+[Mad Axe Studios](https://play.google.com/store/apps/dev?id=6116371801298254722) ·
+[LinkedIn](https://www.linkedin.com/in/sohan-dhungel-a9ab31329)
+
+![Next.js](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss&logoColor=white)
+![Motion](https://img.shields.io/badge/Motion-13-ff4785)
+![Light and dark](https://img.shields.io/badge/theme-light%20%2B%20dark-c8451f)
+
+<br />
+
+<img src="public/apps/jetpack-max-1.jpg" width="32%" alt="Jetpack Max" />
+<img src="public/apps/brainrot-night-shift-1.jpg" width="32%" alt="Brainrot Backrooms Night Shift" />
+<img src="public/apps/scam-with-friends-1.jpg" width="32%" alt="Scam with Friends" />
+
+</div>
+
+---
+
+## Don't just read it. Play it.
+
+The Playground section runs five small games and tools right in the page. Each
+one is a pocket version of something real on Google Play.
+
+| | Game | What you do |
+| --- | --- | --- |
+| 🚀 | **Jetpack Max** | Hold to fly, dodge zappers, grab coins. It speeds up. |
+| 🔤 | **Daily Word** | Guess the five-letter word in six tries. Stuck? Take a clue. |
+| 🔢 | **Merge 1024** | Slide, merge, push one tile to 1024. Keys, WASD, swipe or the pad. |
+| ➡️ | **Arrow Escape** | Tap arrows off the board. Every board is generated solvable. |
+| 🎨 | **Palette lab** | Pick a hue and recolour the whole site, with live WCAG contrast. |
+
+Every game draws from the same colour tokens as the page, so they all work in
+light mode, dark mode, and whatever colour Palette lab paints the site.
+
+## Shipped on Google Play
+
+<table>
+<tr>
+<td align="center"><img src="public/apps/jetpack-max-icon.png" width="56" /><br /><sub>Jetpack Max</sub></td>
+<td align="center"><img src="public/apps/brainrot-night-shift-icon.png" width="56" /><br /><sub>Brainrot Night Shift</sub></td>
+<td align="center"><img src="public/apps/scam-with-friends-icon.png" width="56" /><br /><sub>Scam with Friends</sub></td>
+<td align="center"><img src="public/apps/realm-guard-icon.png" width="56" /><br /><sub>Realm Guard</sub></td>
+<td align="center"><img src="public/apps/daily-word-icon.png" width="56" /><br /><sub>Daily Word</sub></td>
+<td align="center"><img src="public/apps/merge-1024-icon.png" width="56" /><br /><sub>Merge 1024</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="public/apps/veritas-guard-icon.png" width="56" /><br /><sub>Subscription Guard</sub></td>
+<td align="center"><img src="public/apps/veritas-pdf-icon.png" width="56" /><br /><sub>Veritas PDF</sub></td>
+<td align="center"><img src="public/apps/grocressy-icon.png" width="56" /><br /><sub>Grocressy</sub></td>
+<td align="center"><img src="public/apps/colorjoy-icon.png" width="56" /><br /><sub>ColorJoy</sub></td>
+<td align="center"><img src="public/apps/huepilot-icon.png" width="56" /><br /><sub>HuePilot</sub></td>
+<td align="center"><img src="public/apps/ai-calendar-icon.png" width="56" /><br /><sub>Year Progress</sub></td>
+</tr>
+</table>
+
+Games are built in **Godot 4** and **Unity**. Apps are mostly **Flutter**.
+Two studios: **Veritas Studios** for utilities and kids apps, **Mad Axe Studios**
+for games.
+
+## Run it
 
 ```bash
 npm install
@@ -10,67 +76,30 @@ npm run lint     # eslint
 npx tsc --noEmit # types
 ```
 
-## Where the content lives
+## Change the content
 
-Everything on the page is driven from four typed files. Editing these is the
-only thing you need to do to update the site.
+No CMS, no database. The whole page reads from four typed files.
 
 | File | Holds |
 | --- | --- |
-| `src/data/site.ts` | Name, role, contact details, socials, experience, education |
-| `src/data/projects.ts` | Every project, its category, links, icon and screenshots |
+| `src/data/site.ts` | Name, contact, socials, experience, education, the journey timeline |
+| `src/data/projects.ts` | Every project, its studio, Play link, icon, screenshots, and the two studio links |
 | `src/data/skills.ts` | The Toolkit section, grouped |
-| `src/data/demos.ts` | Demo site links for the "Want a website" section, and the pitch copy |
+| `src/data/demos.ts` | Demo website links and the "want a website" pitch |
 
-The contact form posts to Formspree. Set `formspreeId` in `src/data/site.ts` to
-the id from your Formspree endpoint (the part after `/f/`) and the submit button
-goes live. Until then the form renders but will not send, on purpose.
+**Adding an app or game:** drop `<slug>-icon.png` and `<slug>-1.jpg` ... `-4.jpg`
+into `public/apps/`, add an entry to `projects.ts`, and set `landscape: true` if
+the screenshots are wide. Counts, filters, the studio panels and the app ribbon
+all update on their own.
 
-## Things left for you
-
-1. **Formspree id.** `src/data/site.ts` -> `formspreeId`. Without it the contact
-   form is inert.
-2. **Demo site links.** `src/data/demos.ts` has two entries. Paste the rest as
-   `{ title, kind, href }`. An entry without `href` renders as text, not a dead link.
-3. **The domain.** `src/app/layout.tsx` falls back to
-   `https://sohandhungel.vercel.app`. Set `NEXT_PUBLIC_SITE_URL` in Vercel to the
-   real domain so the Open Graph image resolves.
-4. **Godot game links.** Realm Guard, Arrow Escape and Kingdom of Aetheria have no
-   `href` because they are not pushed anywhere public. Add one when they ship and
-   the card gains a link automatically.
-5. **HuePilot and Displayy** are published under a third developer account,
-   `S&S Coders 2`, not under Veritas Studios or Mad Axe. The Studios section links
-   only the two accounts you named. Say the word if you want the third added.
+The contact form posts to Formspree via `formspreeId` in `src/data/site.ts`.
 
 ## The CV
 
 `public/sohan-dhungel-cv.pdf` is generated from `scripts/cv.html`, so edit the
-HTML rather than the PDF. To re-render, print `scripts/cv.html` to PDF from
-Chrome with background graphics on, A4, default margins. It is tuned to fit
-exactly one page.
+HTML, not the PDF. Print it from Chrome with background graphics on, A4, default
+margins. It is tuned to fit exactly one page.
 
-## Assets
-
-`public/apps/` holds real Play Store icons and screenshots, pulled from the live
-listings. `public/portrait.jpg` is the hero photo, resized to 1200x1600.
-
-## Notes for whoever edits this next
-
-- **Do not branch `initial`, `style`, or the element type on `useReducedMotion()`**
-  in anything that is server-rendered. That hook is `null` on the server and a
-  real boolean on the client's first render, so branching it desynchronises
-  hydration and can strand a whole section at `opacity: 0`. Branch the
-  `transition` instead. Several components carry a comment saying so.
-- Elements that animate in from `opacity: 0` carry the `reveal` class. A
-  `<noscript>` rule in `layout.tsx` forces them visible when JS is unavailable.
-- One accent colour, defined once as `--color-accent` in `globals.css`. The
-  palette lab overrides that token plus `--color-accent-wash` and
-  `--color-accent-ink` at runtime, which is why retinting the whole page works.
-  Its lightness clamp guarantees the applied accent clears WCAG AA against the
-  page ground for every hue.
-- **Game state never updates inside a setState updater.** React runs updaters
-  during render and double-invokes them under StrictMode, so scoring, storage
-  writes and `Math.random` all happen in the event handler, with refs mirroring
-  the live values.
-- `src/components/ShotRail.tsx` is built but not mounted. It was pulled from
-  `page.tsx` on request; re-adding it is one import and one line.
+<div align="center">
+<sub>Built in Kathmandu. Tap, swipe, or hold Space.</sub>
+</div>

@@ -32,7 +32,8 @@ export const site = {
     { year: "2025", title: "First hackathon", note: "Joined the same year as the major project.", current: false },
     { year: "2026", title: "Finished BE Computer Engineering", note: "", current: false },
     { year: "2026", title: "Software Engineering Intern", note: "Completed a two-month software engineering internship at Octacore Solutions.", current: false },
-    { year: "2026", title: "Learning Godot", note: "Learning game development and building independent projects.", current: true },
+    { year: "2026", title: "Learning Godot", note: "Learning game development and building independent projects.", current: false },
+    { year: "2026", title: "Shipping games in Godot and Unity", note: "Mad Axe Studios games on Google Play, built in Godot and, for Scam with Friends, Unity.", current: true },
   ],
 
   education: [

@@ -29,8 +29,13 @@ function getServerSnapshot(): Theme {
  * mismatch and the setState-in-effect cascade a useState+useEffect version
  * would trigger.
  */
+/** Current theme, kept in sync with the toggle. Server render is "dark". */
+export function useTheme(): Theme {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
 export function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const theme = useTheme();
 
   function toggle() {
     const next: Theme = theme === "light" ? "dark" : "light";

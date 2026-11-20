@@ -29,7 +29,7 @@ export function ProjectCard({
 }) {
   const shots = project.shots ?? [];
   const indices = previewIndices[project.slug] ?? [0, 1];
-  const landscape = project.slug === "jetpack-max";
+  const landscape = project.landscape === true;
   const LinkIcon =
     project.hrefLabel === "GitHub" ? GithubLogoIcon : GooglePlayLogoIcon;
   return (

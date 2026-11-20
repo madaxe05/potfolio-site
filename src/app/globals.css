@@ -35,6 +35,9 @@
 
 :root {
   color-scheme: dark;
+  /* Accent button hover. Brighten on dark, darken on light: brightening the
+     light-mode accent washes out its white label. */
+  --accent-hover: 1.12;
 }
 
 /* Light mode. Set by the inline script in layout.tsx before paint, and by
@@ -53,6 +56,7 @@
   --color-accent: #c8451f;
   --color-accent-ink: #fdfdfc;
   --color-accent-wash: #fbe6dd;
+  --accent-hover: 0.9;
 }
 
 body {
@@ -209,7 +213,7 @@ body {
   white-space: nowrap;
 }
 .button-primary:hover {
-  filter: brightness(1.12);
+  filter: brightness(var(--accent-hover));
   transform: translateY(-2px);
 }
 .button-secondary {

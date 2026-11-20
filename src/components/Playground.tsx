@@ -2,9 +2,17 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { GameControllerIcon, PaletteIcon, ArrowsOutCardinalIcon } from "@phosphor-icons/react";
+import {
+  GameControllerIcon,
+  PaletteIcon,
+  ArrowsOutCardinalIcon,
+  RocketLaunchIcon,
+  TextAaIcon,
+} from "@phosphor-icons/react";
 import { PlayMerge } from "./PlayMerge";
 import { PlayArrows } from "./PlayArrows";
+import { PlayJetpack } from "./PlayJetpack";
+import { PlayWord } from "./PlayWord";
 import { PaletteLab } from "./PaletteLab";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
@@ -16,6 +24,20 @@ const panels = [
     kind: "Puzzle game",
     note: "Live on Google Play",
     Icon: GameControllerIcon,
+  },
+  {
+    id: "jetpack",
+    name: "Jetpack Max",
+    kind: "Arcade runner",
+    note: "Live on Google Play",
+    Icon: RocketLaunchIcon,
+  },
+  {
+    id: "word",
+    name: "Daily Word",
+    kind: "Word puzzle",
+    note: "Live on Google Play",
+    Icon: TextAaIcon,
   },
   {
     id: "arrows",
@@ -58,7 +80,7 @@ export function Playground() {
         </Reveal>
         <Reveal index={1}>
           <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-muted">
-            Take a puzzle for a spin or find your next favourite colour palette. Small browser experiments, ready to play.
+            Fly a jetpack, crack a word, slide some tiles or find your next favourite colour palette. Small versions of real games, right in the browser.
           </p>
         </Reveal>
 
@@ -128,6 +150,8 @@ export function Playground() {
                   }
                 >
                   {active === "merge" && <PlayMerge />}
+                  {active === "jetpack" && <PlayJetpack />}
+                  {active === "word" && <PlayWord />}
                   {active === "arrows" && <PlayArrows />}
                   {active === "palette" && <PaletteLab />}
                 </motion.div>

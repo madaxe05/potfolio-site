@@ -84,18 +84,25 @@ function stuck(tiles: Tile[]) {
   return (["up", "down", "left", "right"] as Dir[]).every((d) => !step(tiles, d).moved);
 }
 
-/** Tile colour ramp. Stays inside the page palette: one accent, rising presence. */
+/**
+ * Tile colour ramp. Stays inside the page palette: one accent, rising presence.
+ * Built from theme tokens (accent mixed into surface), never fixed hex, so it
+ * reads in light and dark mode and follows Palette lab recolours. Low tiles
+ * use page text; from 128 up the tile is mostly accent, so it flips to
+ * accent-ink.
+ */
+// Literal class strings on purpose: Tailwind only generates classes it can
+// read verbatim in source, so these cannot be built with a template string.
 function tileStyle(v: number) {
   const ramp: Record<number, string> = {
     2: "bg-surface-2 text-muted ring-1 ring-line",
-    4: "bg-[#1d1512] text-fg/80 ring-1 ring-line",
-    8: "bg-[#2a1710] text-fg ring-1 ring-accent/25",
-    16: "bg-[#3a1c11] text-fg ring-1 ring-accent/35",
-    32: "bg-[#4d2213] text-fg ring-1 ring-accent/45",
-    64: "bg-[#682a15] text-fg ring-1 ring-accent/60",
-    128: "bg-[#8a3419] text-fg ring-1 ring-accent/75",
-    256: "bg-[#ad401d] text-fg ring-1 ring-accent",
-    512: "bg-[#cf4d22] text-accent-ink ring-1 ring-accent",
+    4: "bg-[color-mix(in_srgb,var(--color-accent)_10%,var(--color-surface-2))] text-fg ring-1 ring-line",
+    8: "bg-[color-mix(in_srgb,var(--color-accent)_20%,var(--color-surface-2))] text-fg ring-1 ring-accent/25",
+    16: "bg-[color-mix(in_srgb,var(--color-accent)_30%,var(--color-surface-2))] text-fg ring-1 ring-accent/35",
+    32: "bg-[color-mix(in_srgb,var(--color-accent)_42%,var(--color-surface-2))] text-fg ring-1 ring-accent/45",
+    64: "bg-[color-mix(in_srgb,var(--color-accent)_55%,var(--color-surface-2))] text-fg ring-1 ring-accent/60",
+    128: "bg-[color-mix(in_srgb,var(--color-accent)_75%,var(--color-surface-2))] text-accent-ink ring-1 ring-accent/75",
+    256: "bg-[color-mix(in_srgb,var(--color-accent)_88%,var(--color-surface-2))] text-accent-ink ring-1 ring-accent",
   };
   return ramp[v] ?? "bg-accent text-accent-ink ring-1 ring-accent";
 }
@@ -328,7 +335,7 @@ export function PlayMerge() {
                   <button
                     type="button"
                     onClick={keepPlaying}
-                    className="cursor-pointer rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-110 active:scale-[0.98]"
+                    className="cursor-pointer rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-(--accent-hover) active:scale-[0.98]"
                   >
                     Keep playing
                   </button>
@@ -339,7 +346,7 @@ export function PlayMerge() {
                   className={`cursor-pointer rounded-full px-5 py-2.5 text-sm font-medium transition-transform duration-200 active:scale-[0.98] ${
                     won
                       ? "border border-line text-fg hover:border-accent hover:text-accent"
-                      : "bg-accent text-accent-ink hover:brightness-110"
+                      : "bg-accent text-accent-ink hover:brightness-(--accent-hover)"
                   }`}
                 >
                   {won ? "New board" : "Play again"}

@@ -4,7 +4,7 @@ export type SkillGroup = { title: string; items: string[] };
 export const skillGroups: SkillGroup[] = [
   {
     title: "Languages",
-    items: ["Dart", "TypeScript", "JavaScript", "Java", "Python", "C / C++", "SQL", "Solidity", "GDScript"],
+    items: ["Dart", "TypeScript", "JavaScript", "Java", "Python", "C / C++", "C#", "SQL", "Solidity", "GDScript"],
   },
   {
     title: "Mobile",
@@ -24,6 +24,6 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: "Games and tools",
-    items: ["Godot 4", "gdUnit4", "Git", "GitHub", "Figma", "VS Code", "Google Colab", "LaTeX"],
+    items: ["Godot 4", "Unity", "gdUnit4", "Git", "GitHub", "Figma", "VS Code", "Google Colab", "LaTeX"],
   },
 ];

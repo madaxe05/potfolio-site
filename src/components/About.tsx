@@ -53,8 +53,8 @@ export function About() {
               >
                 Octacore Solutions <ArrowUpRightIcon size={14} aria-hidden />
               </a>
-              . I build Android apps, experiment with the web, and learn game
-              development in Godot.
+              . I build Android apps, experiment with the web, and make games
+              in Godot and Unity.
             </p>
             <p>
               From a grocery list to a blockchain document verifier, I care

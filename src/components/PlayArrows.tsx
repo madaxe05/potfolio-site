@@ -233,7 +233,7 @@ export function PlayArrows() {
               <button
                 type="button"
                 onClick={reset}
-                className="cursor-pointer rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-110 active:scale-[0.98]"
+                className="cursor-pointer rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-200 hover:brightness-(--accent-hover) active:scale-[0.98]"
               >
                 New board
               </button>
